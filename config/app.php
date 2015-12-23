@@ -12,8 +12,11 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Laravel',
+    'name' => 'Inventory & Manufacturing Application',
 
+    'organization_name' => 'Hydraulic, Pneumatic & Electric Industrial Bolting Systems HYTORC of Philippines',
+    'organization_short_name' => 'HYTORC',
+    
     /*
     |--------------------------------------------------------------------------
     | Application Environment
