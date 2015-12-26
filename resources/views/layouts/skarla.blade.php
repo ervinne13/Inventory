@@ -25,19 +25,28 @@
         <link rel="stylesheet" href="{{skarla_css_url("plugins.css")}}">
 
         @yield('vendor-css')
+        @include("layouts.parts.default-css")
 
-        <link rel="stylesheet" href="{{skarla_css_url("app.css")}}">
+        <!--<link rel="stylesheet" href="{{skarla_css_url("app.css")}}">-->
+        <link rel="stylesheet" href="{{skarla_css_url("app.min.e7c8016f.css")}}">
         <link rel="stylesheet" href="{{url("css/app.css")}}">
 
         @yield('css')
 
         @include('layouts.parts.favicon')
 
+        @include("layouts.parts.composite-css-scripts")
+
         <script type="text/javascript">
             var ASSET_PATH_BASE = '{{url("/")}}';
             var baseUrl = '{{url("/")}}';
             var baseURL = '{{url("/")}}';
-        </script>
+        </script>        
+
+        @if (Auth::check())
+        @include('layouts.parts.session-js-data')
+        @endif
+
     </head>
     <!-- END Head -->
 
@@ -50,12 +59,12 @@
                 @include('layouts.parts.navbar')
 
                 @if (Auth::check())
-                @include('layouts.parts.sidebar-left')
+                @include('layouts.parts.access-based-sidebar-left')
                 @endif
-                
+
             </nav>
 
-            <div class="content" style="min-height: 1763px;">
+            <div class="content" style="min-height: 1763px; {{$viewOptions["subTitleBar"] == false? "padding-top: 10px;" : ""}}">
 
                 @if ($viewOptions["subTitleBar"])
 
@@ -77,23 +86,27 @@
 
             </div>
 
-            @include('layouts.parts.sidebar-right')
-
             @if($viewOptions["footer"])
             @include('layouts.parts.footer')
             @endif
 
         </div>      
 
-        <!-- Bower Libraries Scripts -->
+        <script src="{{skarla_vendor_url("js/jquery.min.js")}}"></script>                      
+
+        <!-- Bower Libraries Scripts -->        
         <script src="{{skarla_vendor_url("js/lib.min.js")}}"></script>      
 
+        <script src="{{skarla_vendor_url("js/select2.min.js")}}"></script>     
+        <script src="{{skarla_vendor_url("js/bootstrap-select.min.js")}}"></script>
+        
         @yield('vendor-js')               
 
         @include("layouts.parts.composite-js-scripts")
+        @include("layouts.parts.default-js")
 
         <!--Compiled version of skarla/js/app scripts-->
-        <script src="{{skarla_js_url("app.min.e05f769f.js")}}"></script>
+        <script src="{{skarla_js_url("app.min.e05f769f.js")}}"></script>               
 
         @yield('js')
 

@@ -17,6 +17,9 @@ return [
     'organization_name' => 'Hydraulic, Pneumatic & Electric Industrial Bolting Systems HYTORC of Philippines',
     'organization_short_name' => 'HYTORC',
     
+    'author_link' => 'http://ervinne13.github.io',
+    'author' => 'Ervinnne Sodusta',
+    
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -180,6 +183,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * 3rd Party Service Providers...
+         */
+         Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*
@@ -228,7 +235,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        //  Third Party
+        'Datatables'   => Yajra\Datatables\Datatables::class,
     ],
 
 ];

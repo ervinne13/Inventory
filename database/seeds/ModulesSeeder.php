@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Module;
 use Illuminate\Database\Seeder;
 
 class ModulesSeeder extends Seeder {
@@ -12,16 +13,19 @@ class ModulesSeeder extends Seeder {
     public function run() {
 
         $modules = [
-            "code" => "IM", "name" => "Item",
-            "code" => "COM", "name" => "Company",
-            "code" => "LOC", "name" => "Location",
-            "code" => "IMov", "name" => "Item Movement",
-            "code" => "TI", "name" => "Transfer Item",
-            "code" => "MI", "name" => "Manufacture Item"
+            ["code" => "I", "name" => "Item"],
+            ["code" => "UOM", "name" => "Unit of Measurement"],
+            ["code" => "COM", "name" => "Company"],
+            ["code" => "LOC", "name" => "Location"],
+            ["code" => "IM", "name" => "Item Movement"],
+            ["code" => "IR", "name" => "Item Reclass"],
+            ["code" => "TO", "name" => "Transfer Order"],
+            ["code" => "BOM", "name" => "Bill of Materials"],
+            ["code" => "PRO", "name" => "Production Order"],
+            ["code" => "ER", "name" => "Exchange Rate"],
         ];
-        
-        
-        
+
+        Module::insert($modules);
     }
 
 }

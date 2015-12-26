@@ -16,8 +16,9 @@ class Controller extends BaseController {
     protected function getDefaultViewData() {
 
         $viewData = [
+            "pageLayout"  => "sidebar-full-height",
             "viewOptions" => [
-                "subTitleBar" => true,
+                "subTitleBar" => false,
                 "footer"      => true
             ]
         ];

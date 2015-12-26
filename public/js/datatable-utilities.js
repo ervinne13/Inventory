@@ -8,8 +8,8 @@ var datatable_utilities = {};
 datatable_utilities.renderDate = function (date, type) {
 
     // if display or filter data is requested, format the date
-    if (type === 'display' || type === 'filter') {
-        return (moment(date).format(form_utilities.DISPLAY_DATE_FORMAT));
+    if (date && (type === 'display' || type === 'filter')) {
+        return (moment(date).format(SGFormatter.DISPLAY_DATE_FORMAT));
     }
 
     // Otherwise the data type requested (`type`) is type detection or
@@ -23,7 +23,7 @@ datatable_utilities.renderTime = function (time, type) {
 
     // if display or filter data is requested, format the time
     if (type === 'display' || type === 'filter') {
-        return (moment(time, form_utilities.SERVER_TIME_FORMAT).format(form_utilities.DISPLAY_TIME_FORMAT));
+        return (moment(time, SGFormatter.SERVER_TIME_FORMAT).format(SGFormatter.DISPLAY_TIME_FORMAT));
     }
 
     // Otherwise the data type requested (`type`) is type detection or
@@ -37,7 +37,7 @@ datatable_utilities.renderTimeFromDateTime = function (time, type) {
 
     // if display or filter data is requested, format the time
     if (type === 'display' || type === 'filter') {
-        return (moment(time, form_utilities.SERVER_DATETIME_FORMAT).format(form_utilities.DISPLAY_TIME_FORMAT));
+        return (moment(time, SGFormatter.SERVER_DATETIME_FORMAT).format(SGFormatter.DISPLAY_TIME_FORMAT));
     }
 
     // Otherwise the data type requested (`type`) is type detection or
@@ -134,7 +134,7 @@ datatable_utilities.initializeDeleteAction = function () {
 
                     setTimeout(function () {
                         location.reload();
-                    }, globals.reloadRedirectWaitTime);
+                    }, 1500);
 
                 },
                 error: function (response) {

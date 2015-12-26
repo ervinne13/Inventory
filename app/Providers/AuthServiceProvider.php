@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
-class AuthServiceProvider extends ServiceProvider
-{
+class AuthServiceProvider extends ServiceProvider {
+
     /**
      * The policy mappings for the application.
      *
@@ -21,10 +21,12 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        $this->registerPolicies();
+    public function boot(Gate $gate) {
+        $this->registerPolicies($gate);
 
-        //
+//        $gate->define('update-post', function ($user, $post) {
+//            return $user->id === $post->user_id;
+//        });
     }
+
 }

@@ -399,16 +399,17 @@
             //  delete from view
             $('.' + this.generateRowClassName() + "[data-id=" + id + "]").remove();
 
-            if (this.options.onDelete) {
-                this.options.onDelete(rowData);
+            if (_this.sgOptions.onDelete) {
+                _this.sgOptions.onDelete(rowData);
             }
 
         };
 
         //</editor-fold>
 
-
-        generateHeaderRow(this);
+        if (this.sgOptions.autoGenerateHeaderRow === true) {
+            generateHeaderRow(this);
+        }
         initializeComponents(this);
 
         //  make sure that there's a tbody
@@ -539,10 +540,16 @@
         $(sgTable.selector).on('click', '.' + deleteButton, function () {
             var id = $(this).data('id');
 
-            confirm("Are you sure you want to delete this entry?", function (confirmed) {
-                if (confirmed) {
-                    sgTable.deleteRow(id);
-                }
+            swal({
+                title: "Are you sure?",
+                text: "This record will be deleted!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                closeOnConfirm: true
+            }, function () {
+                sgTable.deleteRow(id);
             });
 
         });
@@ -569,10 +576,10 @@
                 displayStyle = ' style="display: none;"';
             }
 
+            var headerColumnClass = sgTable.sgOptions.headerColumnClass ? sgTable.sgOptions.headerColumnClass : "";
             var additionalClass = cols[key].class ? cols[key].class : '';
 
-            rowHtml += '<th' + displayStyle + ' class=' + additionalClass + '>' + cols[key].label + '</th>';
-
+            rowHtml += '<th' + displayStyle + ' class="' + additionalClass + " " + headerColumnClass + '"><strong>' + cols[key].label + '</strong></th>';
         }
 
         rowHtml += "</tr></thead>";

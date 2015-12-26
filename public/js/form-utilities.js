@@ -1,4 +1,4 @@
-/* global globals, moment */
+/* global moment, SGFormatter */
 
 var form_utilities = {
     // constants
@@ -51,7 +51,7 @@ form_utilities.formToJSON = function ($form) {
             //  auto date processing requires momentjs
             if (moment) {
                 value = moment(value, $(this).data('date-format'))
-                        .format(form_utilities.SERVER_DATE_FORMAT);
+                        .format(SGFormatter.SERVER_DATE_FORMAT);
 
                 if (value == 'Invalid date') {
                     value = null;
@@ -65,7 +65,7 @@ form_utilities.formToJSON = function ($form) {
             //  auto date processing requires momentjs
             if (moment) {
                 value = moment(value, $(this).data('time-format'))
-                        .format(form_utilities.SERVER_TIME_FORMAT);
+                        .format(SGFormatter.SERVER_TIME_FORMAT);
 
                 if (value == 'Invalid date') {
                     value = null;
@@ -83,18 +83,38 @@ form_utilities.formToJSON = function ($form) {
     return json;
 };
 
+form_utilities.initializeDefaultSelect2 = function () {
+    if ($('.select2-input').length === 0) {
+        return;
+    }
+
+    $('.select2-input').on("select2:open", function () {
+        if ($(this).parents("[class*='has-']").length) {
+            var classNames = $(this).parents("[class*='has-']")[ 0 ].className.split(/\s+/);
+
+            for (var i = 0; i < classNames.length; ++i) {
+                if (classNames[ i ].match("has-")) {
+                    $("body > .select2-container").addClass(classNames[ i ]);
+                }
+            }
+        }
+    }).select2({
+        theme: "bootstrap"
+    });
+};
+
 form_utilities.initializeDefaultTimePicker = function () {
     $('.timepicker').each(function () {
         var originalValue = $(this).val();
 
         if (originalValue) {
-            var displayValue = moment(originalValue, form_utilities.SERVER_TIME_FORMAT)
-                    .format(form_utilities.DISPLAY_TIME_FORMAT);
+            var displayValue = moment(originalValue, SGFormatter.SERVER_TIME_FORMAT)
+                    .format(SGFormatter.DISPLAY_TIME_FORMAT);
             $(this).val(displayValue);
         }
 
         $(this).bootstrapMaterialDatePicker({
-            format: form_utilities.DISPLAY_TIME_FORMAT,
+            format: SGFormatter.DISPLAY_TIME_FORMAT,
             clearButton: true,
             weekStart: 1,
             date: false,
@@ -109,19 +129,30 @@ form_utilities.initializeDefaultDatePicker = function () {
         var originalValue = $(this).val();
 
         if (originalValue) {
-            var displayValue = moment(originalValue, form_utilities.SERVER_DATE_FORMAT)
-                    .format(form_utilities.DISPLAY_DATE_FORMAT);
+            var displayValue = moment(originalValue, SGFormatter.SERVER_DATE_FORMAT)
+                    .format(SGFormatter.DISPLAY_DATE_FORMAT);
             $(this).val(displayValue);
         }
 
         $(this).bootstrapMaterialDatePicker({
-            format: form_utilities.DISPLAY_DATE_FORMAT,
+            format: SGFormatter.DISPLAY_DATE_FORMAT,
             clearButton: true,
             weekStart: 1,
             time: false
         });
     });
 
+};
+
+form_utilities.setFieldsRequiredDisplay = function () {
+    $('.form-control').each(function () {
+        if ($(this).prop("required")) {
+            var id = $(this).attr('id');
+            var originalText = $('[for=' + id + ']').html();
+            $('[for=' + id + ']').html(originalText + ' <span class="text-danger">*</span>');
+        }
+
+    });
 };
 
 form_utilities.setFieldError = function (fieldName, errorMessage) {
@@ -191,19 +222,19 @@ form_utilities.initializeDefaultProcessing = function ($form, $detailSGTable) {
                         if (form_utilities.successHandler) {
                             form_utilities.successHandler(message);
                         } else {
+                            if (form_utilities.onSaveMessage) {
+                                swal("Success!", form_utilities.onSaveMessage, "success");
+                            } else {
+                                swal("Success!", "Saved!", "success");
+                            }
+
                             setTimeout(function () {
                                 if (type == "action-create-new") {
                                     window.location.reload();
                                 } else if (type == "action-create-close" || type == "action-update-close") {
                                     window.location.href = form_utilities.moduleUrl;
                                 }
-                            }, globals.reloadRedirectWaitTime);
-
-                            if (form_utilities.onSaveMessage) {
-                                swal("Success!", form_utilities.onSaveMessage, "success");
-                            } else {
-                                swal("Success!", "Saved!", "success");
-                            }
+                            }, 1500);
                         }
                     } else {
                         console.error(message);

@@ -8,3 +8,22 @@ and open the template in the editor.
     Author     : ervinne
 */
 
+.form-control,.select2-selection,.select2-search__field {
+    background-color: white !important;
+}
+
+.form-control:disabled {
+    background-color: #d9dce2 !important;
+}
+
+form-control:readonly {
+    background-color: #d9dce2 !important;
+}
+
+.h-130 {
+    height: 130px !important;   
+}
+
+.error {
+    color: red;
+}
