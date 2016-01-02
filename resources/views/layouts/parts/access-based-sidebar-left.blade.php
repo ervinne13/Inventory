@@ -1,4 +1,12 @@
 
+@if (Auth::check())
+
+<?php
+if (!session("currentUser.accessibleModuleOrder")) {
+    Auth::user()->resetAccessibleModuleOrder();    
+}
+?>
+
 <aside class="navbar-default sidebar ps-container ps-theme-default affix-top" data-ps-id="e55246e4-d50d-cbc7-c347-7277b532fe40">
     <div class="sidebar-overlay-head">
         <img src="{{skarla_images_url("logo-warning-white@2X.png")}}" alt="Logo" width="80">
@@ -37,7 +45,7 @@
                         <i class="fa fa-home fa-lg fa-fw"></i>
                         <span class="nav-label">Home</span>                                
                     </a>
-                </li>
+                </li>                
                 @foreach (session("currentUser.accessibleModuleOrder") AS $moduleGroup)
                 <li class="primary-submenu has-submenu">
                     <a href="javascript: void(0)" title="{{$moduleGroup["name"]}}" class="menu-toggle">
@@ -66,3 +74,5 @@
 
     </div>   
 </aside>
+
+@endif

@@ -83,6 +83,14 @@ form_utilities.formToJSON = function ($form) {
     return json;
 };
 
+form_utilities.initSwitchery = function (selector, settings) {
+    var switches = document.querySelectorAll(selector);
+    var switchesIter = Array.prototype.slice.call(switches);
+    switchesIter.forEach(function (switcher) {
+        new Switchery(switcher, settings);
+    });
+};
+
 form_utilities.initializeDefaultSelect2 = function () {
     if ($('.select2-input').length === 0) {
         return;
@@ -275,8 +283,6 @@ form_utilities.initializeDefaultProcessing = function ($form, $detailSGTable) {
 
 form_utilities.process = function (type, data, callback) {
 
-    console.log("Processing Data:", data);
-
     var url, method;
     if (type == "action-create-new" || type == "action-create-close") {
         url = form_utilities.moduleUrl;
@@ -284,6 +290,9 @@ form_utilities.process = function (type, data, callback) {
     } else if (type == "action-update-close") {
         url = form_utilities.moduleUrl + "/" + form_utilities.updateObjectId;
         method = 'PUT';
+    } else if (type == "action-update-post" || type == "action-create-post") {
+        url = form_utilities.moduleUrl + "/post/" + (form_utilities.updateObjectId ? form_utilities.updateObjectId : false);
+        method = 'POST';
     }
 
     $.ajax({

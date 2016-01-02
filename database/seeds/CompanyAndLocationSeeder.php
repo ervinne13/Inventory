@@ -14,9 +14,9 @@ class CompanyAndLocationSeeder extends Seeder {
     public function run() {
         $companies = [
             [
-                "code"                 => "HYTORC",
-                "name"                 => "HYTORC",
-                "cost_flow_assumption" => "FIFO"
+                "code"            => "HYTORC",
+                "name"            => "HYTORC",
+                "mode_of_costing" => "FIFO"
             ]
         ];
 
@@ -46,6 +46,11 @@ class CompanyAndLocationSeeder extends Seeder {
                 "company_code" => "HYTORC",
                 "code"         => "W_QC4",
                 "name"         => "Quezon City Warehouse 4",
+            ],
+            [
+                "company_code" => "HYTORC",
+                "code"         => "P_QC1",
+                "name"         => "Quezon City Production Plant",
             ],
         ];
 

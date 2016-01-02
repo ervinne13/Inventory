@@ -3,6 +3,7 @@
 use App\Models\Security\AccessControl;
 use App\Models\Security\AccessControlList;
 use App\Models\Security\Role;
+use App\Models\Security\UserLocation;
 use App\Models\Security\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,7 @@ class DefaultRolesAndUsersSeeder extends Seeder {
         $this->insertACL();
         $this->insertUsers();
         $this->insertUserRoles();
+        $this->insertUserLocations();
     }
 
     private function insertRoles() {
@@ -106,10 +108,12 @@ class DefaultRolesAndUsersSeeder extends Seeder {
         $users = [
             ["username" => "admin", "display_name" => "Administrator", "location_full_access" => true],
             ["username" => "dtumulak", "display_name" => "Doris Tumulak", "location_full_access" => false],
+            ["username" => "yyao", "display_name" => "Yvonne Yao", "location_full_access" => false],
+            ["username" => "atampus", "display_name" => "April Tampus", "location_full_access" => false],
             ["username" => "lbatarao", "display_name" => "Lizeth Batarao", "location_full_access" => false],
             ["username" => "evillalon", "display_name" => "Ehmar Villalon", "location_full_access" => false],
-            ["username" => "gflores", "display_name" => "Gabrielle Flores", "location_full_access" => false],
-            ["username" => "psampani", "display_name" => "Prosa Mae Sampani", "location_full_access" => false],
+            ["username" => "gflores", "display_name" => "Gabrielle Flores", "location_full_access" => true],
+            ["username" => "psampani", "display_name" => "Prosa Mae Sampani", "location_full_access" => true],
             ["username" => "ggarcia", "display_name" => "Gretchen Garcia", "location_full_access" => false],
         ];
 
@@ -124,6 +128,8 @@ class DefaultRolesAndUsersSeeder extends Seeder {
         $userRoles = [
             ["user_username" => "admin", "role_code" => "ADMIN"],
             ["user_username" => "dtumulak", "role_code" => "RCVNG"],
+            ["user_username" => "yyao", "role_code" => "RCVNG"],
+            ["user_username" => "atampus", "role_code" => "RCVNG"],
             ["user_username" => "lbatarao", "role_code" => "PLDMAN"],
             ["user_username" => "evillalon", "role_code" => "PRODMAN"],
             ["user_username" => "gflores", "role_code" => "AUDIT"],
@@ -134,6 +140,29 @@ class DefaultRolesAndUsersSeeder extends Seeder {
         ];
 
         UserRole::insert($userRoles);
+    }
+
+    private function insertUserLocations() {
+        $locations = [
+            //  Receiving
+            ["user_username" => "dtumulak", "company_code" => "HYTORC", "location_code" => "W_QC1", "default" => true],
+            ["user_username" => "yyao", "company_code" => "HYTORC", "location_code" => "W_QC2", "default" => true],
+            ["user_username" => "atampus", "company_code" => "HYTORC", "location_code" => "W_QC3", "default" => true],
+            //  PLD
+            ["user_username" => "lbatarao", "company_code" => "HYTORC", "location_code" => "W_QC1", "default" => true],
+            ["user_username" => "lbatarao", "company_code" => "HYTORC", "location_code" => "W_QC2", "default" => true],
+            ["user_username" => "lbatarao", "company_code" => "HYTORC", "location_code" => "W_QC3", "default" => true],
+            ["user_username" => "lbatarao", "company_code" => "HYTORC", "location_code" => "W_QC4", "default" => true],
+            ["user_username" => "ggarcia", "company_code" => "HYTORC", "location_code" => "W_QC1", "default" => true],
+            ["user_username" => "ggarcia", "company_code" => "HYTORC", "location_code" => "W_QC2", "default" => true],
+            ["user_username" => "ggarcia", "company_code" => "HYTORC", "location_code" => "W_QC3", "default" => true],
+            ["user_username" => "ggarcia", "company_code" => "HYTORC", "location_code" => "W_QC4", "default" => true],
+            //  Production
+            ["user_username" => "evillalon", "company_code" => "HYTORC", "location_code" => "P_QC1", "default" => true],
+            ["user_username" => "ggarcia", "company_code" => "HYTORC", "location_code" => "P_QC1", "default" => true],
+        ];
+
+        UserLocation::insert($locations);
     }
 
 }

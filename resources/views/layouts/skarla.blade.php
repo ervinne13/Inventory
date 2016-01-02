@@ -27,8 +27,8 @@
         @yield('vendor-css')
         @include("layouts.parts.default-css")
 
-        <!--<link rel="stylesheet" href="{{skarla_css_url("app.css")}}">-->
-        <link rel="stylesheet" href="{{skarla_css_url("app.min.e7c8016f.css")}}">
+        <link rel="stylesheet" href="{{skarla_css_url("app.css")}}">
+        <!--<link rel="stylesheet" href="{{skarla_css_url("app.min.e7c8016f.css")}}">-->
         <link rel="stylesheet" href="{{url("css/app.css")}}">
 
         @yield('css')
@@ -51,7 +51,6 @@
     <!-- END Head -->
 
     <body class="{{$pageLayout or "sidebar-full-height"}}">
-        <!--<body >-->
 
         <div class="main-wrap">
             <nav class="navigation">

@@ -712,6 +712,9 @@
                 formattedValue = JSON.stringify(value);
                 console.log("Converted to JSON: " + formattedValue);
                 break;
+            case 'boolean-yes-no':
+                formattedValue = value ? "Yes" : "No"
+                break;
             default:
                 formattedValue = value;
         }

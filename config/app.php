@@ -186,7 +186,7 @@ return [
         /*
          * 3rd Party Service Providers...
          */
-         Yajra\Datatables\DatatablesServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,       
     ],
 
     /*

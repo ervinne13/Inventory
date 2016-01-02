@@ -13,9 +13,12 @@ class Controller extends BaseController {
         DispatchesJobs,
         ValidatesRequests;
 
+    protected $moduleCode = null;
+
     protected function getDefaultViewData() {
 
         $viewData = [
+            "moduleCode"  => $this->moduleCode,
             "pageLayout"  => "sidebar-full-height",
             "viewOptions" => [
                 "subTitleBar" => false,

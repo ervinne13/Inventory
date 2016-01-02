@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder {
 
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder {
 
             DB::table("role")->truncate();
             DB::table("user_role")->truncate();
+            DB::table("user_location")->truncate();
             DB::table("user")->truncate();
 
             DB::table("exchange_rate")->truncate();
@@ -34,6 +36,16 @@ class DatabaseSeeder extends Seeder {
             DB::table("currency")->truncate();
 
             //  TODO truncate modules here
+
+            DB::table("location_item_stock_summary")->truncate();
+            DB::table("inventory_stock_stack")->truncate();
+            
+            DB::table("raw_material")->truncate();
+            DB::table("bill_of_materials")->truncate();
+
+            DB::table("item_movement_source")->truncate();
+            DB::table("item_movement")->truncate();            
+
             DB::table("item")->truncate();
             DB::table("item_type")->truncate();
             DB::table("item_image")->truncate();
@@ -44,10 +56,17 @@ class DatabaseSeeder extends Seeder {
 
             $this->call(ModulesSeeder::class);
             $this->call(NumberSeriesSeeder::class);
-            
+
             $this->call(CompanyAndLocationSeeder::class);
             $this->call(DefaultRolesAndUsersSeeder::class);
-            $this->call(ItemSeeder::class);            
+
+            $this->call(DefaultCurrenciesSeeder::class);
+
+            $this->call(ItemMovementSourceSeeder::class);
+
+            $this->call(ItemSeeder::class);
+            $this->call(InitialInventorySeeder::class);
+            $this->call(SampleBillOfMaterialsSeeder::class);
 
             DB::commit();
         } catch (Exception $e) {

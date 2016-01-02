@@ -11,6 +11,7 @@
   |
  */
 
+Route::get('/test', 'TestController@test');
 Route::get('/', 'HomeController@index');
 
 Route::get("/logout", "Auth\LoginController@logout");
@@ -44,4 +45,20 @@ Route::group(['prefix' => 'security', 'namespace' => 'Modules\Security', 'middle
 
     Route::get('acl/datatable', 'ACLController@datatable');
     Route::resource('acl', 'ACLController');
+});
+
+Route::group(['prefix' => 'inventory', 'namespace' => 'Modules\Inventory', 'middleware' => ['auth']], function () {
+    Route::get('item-movements/datatable', 'ItemMovementController@datatable');
+    Route::post('item-movements/post/{docNo}', 'ItemMovementController@postDocument');
+    Route::resource('item-movements', 'ItemMovementController');
+});
+
+Route::group(['prefix' => 'production', 'namespace' => 'Modules\Production', 'middleware' => ['auth']], function () {
+    Route::get('bom/datatable', 'BillOfMaterialsController@datatable');
+    Route::resource('bom', 'BillOfMaterialsController');
+
+    ///{BOMCode}/qty/{qty}    
+    Route::get('production-orders/production-details', 'ProductionOrdersController@productionCostDetails');
+    Route::get('production-orders/datatable', 'ProductionOrdersController@datatable');
+    Route::resource('production-orders', 'ProductionOrdersController');    
 });

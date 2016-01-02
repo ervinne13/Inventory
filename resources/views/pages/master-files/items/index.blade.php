@@ -26,8 +26,8 @@
         <div class="panel panel-default b-a-0 p-10 shadow-box">
 
             @include('module.datatable', [
-            "id" => "uom-datatable",
-            "columns" => ["", "Code", "Name"]
+            "id" => "items-datatable",
+            "columns" => ["", "Type", "Code", "Name", "Default Currency", "Default Unit Cost"]
             ])
 
         </div>

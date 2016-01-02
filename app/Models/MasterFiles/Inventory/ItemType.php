@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItemType extends Model {
 
-    protected $table = "item_type";
+    public $incrementing  = false;
+    protected $table      = "item_type";
+    protected $primarykey = "code";
 
 }
