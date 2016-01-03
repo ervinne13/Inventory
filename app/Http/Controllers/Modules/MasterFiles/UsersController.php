@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Modules\MasterFiles;
 use App\Http\Controllers\Controller;
 use App\Models\MasterFiles\Location;
 use App\Models\Security\Role;
+use App\Models\Security\UserLocation;
+use App\Models\Security\UserRole;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class UsersController extends Controller {
     }
 
     public function datatable() {
-        return Datatables::of(User::with('roles'))->make(true);
+        return Datatables::of(User::with('roles')->with('locations'))->make(true);
     }
 
     /**
@@ -50,7 +52,37 @@ class UsersController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
-        //
+
+        //  TODO add extra validation here
+
+        try {
+            $user           = new User($request->toArray());
+            $user->password = \Hash::make($request->password);
+            $user->save();
+
+            $roles = [];
+            foreach ($request->roles AS $role) {
+                array_push($roles, [
+                    "user_username" => $user->username,
+                    "role_code"     => $role,
+                ]);
+            }
+
+            UserRole::insert($roles);
+
+            $locations = [];
+            foreach ($request->locations AS $location) {
+                array_push($locations, [
+                    "user_username" => $user->username,
+                    "company_code"  => "HYTORC", //  TODO, make this dynamic later
+                    "location_code" => $location
+                ]);
+            }
+
+            UserLocation::insert($locations);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -89,7 +121,41 @@ class UsersController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        //
+        try {
+            $user = User::find($id);
+            $user->fill($request->toArray());
+
+            if ($request->password) {
+                $user->password = \Hash::make($request->password);
+            }
+
+            $user->save();
+
+            $roles = [];
+            foreach ($request->roles AS $role) {
+                array_push($roles, [
+                    "user_username" => $user->username,
+                    "role_code"     => $role,
+                ]);
+            }
+
+            UserRole::where("user_username", $user->username)->delete();
+            UserRole::insert($roles);
+
+            $locations = [];
+            foreach ($request->locations AS $location) {
+                array_push($locations, [
+                    "user_username" => $user->username,
+                    "company_code"  => "HYTORC", //  TODO, make this dynamic later
+                    "location_code" => $location
+                ]);
+            }
+
+            UserLocation::where("user_username", $user->username)->delete();
+            UserLocation::insert($locations);
+        } catch (\Exception $e) {
+            return response($e->getMessage(), 500);
+        }
     }
 
     /**

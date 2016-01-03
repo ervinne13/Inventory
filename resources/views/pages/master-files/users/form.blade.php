@@ -1,4 +1,4 @@
-<?php $uses = ["form"] ?>
+<?php $uses     = ["form"] ?>
 
 @extends('layouts.skarla')
 
@@ -73,7 +73,8 @@
                         <label for="input-locations" class="control-label">Location(s)</label>
                         <select name="locations" multiple id="input-locations" required class="form-control h-130">
                             @foreach($locations AS $location)
-                            <option value="{{$location->code}}">{{$location->name}}</option>
+                            <?php $selected = $user->hasLocation($location->code) ? "selected" : "" ?>
+                            <option {{$selected}} value="{{$location->code}}">{{$location->name}}</option>
                             @endforeach
                         </select>
                     </div>

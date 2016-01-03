@@ -26,7 +26,7 @@
                 {data: 'username'},
                 {data: 'display_name'},
                 {data: 'roles'},
-                {data: 'roles'}
+                {data: 'locations'}
             ],
             columnDefs: [
                 {searchable: false, targets: [0, 3, 4]},
@@ -60,8 +60,16 @@
                 {
                     targets: [4],
                     render: function (locations) {
-                        console.log(locations);
-                        return "locations will be displayed here";
+                        var locationNames = [];
+
+                        if (locations.length > 1) {
+                            return locations.length + " locations, open to view";
+                        } else if (locations.length == 1) {
+                            return locations[0].name
+                        } else {
+                            return "None";
+                        }
+
                     }
                 }
             ]

@@ -15,6 +15,7 @@ class User extends Authenticatable {
     use Notifiable;
 
     public $incrementing  = false;
+    public $timestamps    = false;
     protected $table      = "user";
     protected $primaryKey = "username";
     //  Custom Stateful Properties
@@ -26,7 +27,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'display_name',
     ];
 
     /**
@@ -86,6 +87,11 @@ class User extends Authenticatable {
     public function hasRole($roleCode) {
         $roleCodes = array_column($this->roles->toArray(), "code");
         return in_array($roleCode, $roleCodes);
+    }
+
+    public function hasLocation($locationCode) {
+        $locationCodes = array_column($this->locations->toArray(), "code");
+        return in_array($locationCode, $locationCodes);
     }
 
     public function getModuleAcces($moduleCode) {
