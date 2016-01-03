@@ -23,7 +23,7 @@
             order: [2, "asc"],
             columns: [
                 {data: 'code'},
-                {data: 'item_type.name', name: "item_type.name"},
+                {data: 'item_type.name', name: "itemType.name"},
                 {data: 'code'},
                 {data: 'name'},
                 {data: 'default_currency_code'},
@@ -41,8 +41,12 @@
 
                         if (access == "MANAGER") {
                             actions = datatable_utilities.getAllDefaultActions(code);
-                        } else if (access == "AUTHOR" && session.currentUser.username == rowData.created_by) {
-                            actions = datatable_utilities.getAllDefaultActions(code);
+                        } else if (access == "AUTHOR") {
+                            if (session.currentUser.username == rowData.created_by) {
+                                actions = datatable_utilities.getAllDefaultActions(code);
+                            } else {
+                                actions = [datatable_utilities.getDefaultViewAction(code)];
+                            }
                         } else if (access == "VIEWER") {
                             actions = [datatable_utilities.getDefaultViewAction(code)];
                         } else {

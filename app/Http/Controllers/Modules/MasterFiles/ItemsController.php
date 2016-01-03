@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Modules\MasterFiles;
 use App\Http\Controllers\Controller;
 use App\Models\MasterFiles\Accounting\Currency;
 use App\Models\MasterFiles\Inventory\Item;
+use App\Models\MasterFiles\Inventory\ItemImage;
 use App\Models\MasterFiles\Inventory\ItemType;
 use App\Models\MasterFiles\Inventory\ItemUOM;
 use App\Models\MasterFiles\Inventory\UOM;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
+use function response;
 use function view;
 
 class ItemsController extends Controller {
@@ -29,6 +33,10 @@ class ItemsController extends Controller {
 
     public function datatable() {
         return Datatables::of(Item::with("itemType")->select('item.*'))->make(true);
+    }
+
+    public function itemFiles($itemCode) {
+        return ItemImage::where("item_code", $itemCode)->get();
     }
 
     //
@@ -89,7 +97,13 @@ class ItemsController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
-        //
+
+        try {
+            $this->saveItem(new Item(), $request);
+        } catch (Exception $e) {
+            throw $e;
+//            return response($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -109,7 +123,16 @@ class ItemsController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        //
+        $viewData = $this->getDefaultFormViewData();
+
+        $viewData["mode"] = "create";
+        $viewData["item"] = Item::
+                with('images')
+                ->with("UOMList")
+                ->where("code", $id)
+                ->first();
+
+        return view("pages.master-files.items.form", $viewData);
     }
 
     /**
@@ -120,7 +143,11 @@ class ItemsController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        //
+        try {
+            $this->saveItem(Item::find($id), $request);
+        } catch (Exception $e) {
+            return response($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -133,6 +160,11 @@ class ItemsController extends Controller {
         //
     }
 
+    // </editor-fold>
+
+    /**     * ******************************************************************* */
+    // <editor-fold defaultstate="collapsed" desc="Utility Functions">
+
     protected function getDefaultFormViewData() {
         $viewData = $this->getDefaultViewData();
 
@@ -141,6 +173,65 @@ class ItemsController extends Controller {
         $viewData["unitsOfMeasurement"] = UOM::all();
 
         return $viewData;
+    }
+
+    protected function saveItem(Item $item, Request $request) {
+
+        try {
+            DB::beginTransaction();
+
+            $item->fill($request->toArray());
+            $item->save();
+
+            if ($request->details) {
+                ItemUOM::where("item_code", $item->code)->delete();
+
+                $UOMList = [];
+                $details = json_decode($request->details, true);
+                foreach ($details AS $UOMDetail) {
+
+                    if ($UOMDetail["is_base_uom"]) {
+                        $baseUOM              = new ItemUOM();
+                        $baseUOM->item_code   = $item->code;
+                        $baseUOM->uom_code    = $UOMDetail["uom_code"];
+                        $baseUOM->is_base_uom = true;
+                        $baseUOM->save();
+                    } else {
+                        array_push($UOMList, [
+                            "item_code"                => $item->code,
+                            "uom_code"                 => $UOMDetail["uom_code"],
+                            "is_base_uom"              => $UOMDetail["is_base_uom"],
+                            "base_uom_code"            => $UOMDetail["base_uom_code"],
+                            "base_uom_conv_multiplier" => $UOMDetail["base_uom_conv_multiplier"] ? $UOMDetail["base_uom_conv_multiplier"] : 1,
+                            "base_uom_conv_divider"    => $UOMDetail["base_uom_conv_divider"] ? $UOMDetail["base_uom_conv_divider"] : 1,
+                        ]);
+                    }
+                }
+
+                ItemUOM::insert($UOMList);
+            }
+
+            if ($request->images) {
+
+                ItemImage::where("item_code", $item->code)->delete();
+
+                $itemImageList = [];
+                foreach ($request->images AS $image) {
+                    array_push($itemImageList, [
+                        "item_code" => $item->code,
+                        "image_url" => "uploads/{$image["server_filename"]}",
+                    ]);
+                }
+
+                ItemImage::insert($itemImageList);
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            //  use the exception for rolling back only, let the controller methods handle
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     // </editor-fold>

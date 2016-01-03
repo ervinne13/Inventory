@@ -17,6 +17,7 @@
 <script type="text/javascript">
 var code = '{{$item->code}}';
 var mode = '{{$mode}}';
+var details = JSON.parse('{!! $item->UOMList !!}');
 </script>
 
 <script src="{{url("js/pages/master-files/items/form.js")}}"></script>
@@ -57,15 +58,20 @@ var mode = '{{$mode}}';
                         <input name="name" value="{{$item->name}}" id="input-name" required placeholder="How should the system display this?" type="text" class="form-control">
                     </div>
 
+                    <!--                    <div class="form-group">
+                                            <label class="control-label" for="input-currency">Default currency</label>
+                                            <select name="default_currency_code" id="input-currency" class="form-control select2-input">
+                                                <option disabled selected>-- Select Currency --</option>
+                                                @foreach($currencies AS $currency)
+                    <?php $selected = $item->default_currency_code == $currency->code ? "selected" : "" ?>
+                                                <option {{$selected}} value="{{$currency->code}}">{{$currency->name}}</option>
+                                                @endforeach
+                                            </select>                        
+                                        </div>-->
+
                     <div class="form-group">
                         <label class="control-label" for="input-currency">Default currency</label>
-                        <select name="default_currency_code" id="input-currency" class="form-control select2-input">
-                            <option disabled selected>-- Select Currency --</option>
-                            @foreach($currencies AS $currency)
-                            <?php $selected = $item->default_currency_code == $currency->code ? "selected" : "" ?>
-                            <option {{$selected}} value="{{$currency->code}}">{{$currency->name}}</option>
-                            @endforeach
-                        </select>                        
+                        <input name="default_currency_code" value="PHP" id="input-currency" readonly class="form-control">
                     </div>
 
                     <div class="form-group">

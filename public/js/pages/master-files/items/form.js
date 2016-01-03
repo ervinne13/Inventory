@@ -1,5 +1,5 @@
 
-/* global form_utilities, baseUrl, mode, code, baseURL, sg_table_row_utilities */
+/* global form_utilities, baseUrl, mode, code, baseURL, sg_table_row_utilities, details */
 
 (function () {
 
@@ -45,12 +45,12 @@
                 uom_code: {label: "UOM Code"},
                 is_base_uom: {label: "Is Base UOM?", displayFormat: "boolean-yes-no"},
                 base_uom_code: {label: "Base UOM Code"},
-                base_uom_conv_multiplier: {label: "Multiplier"},
-                base_uom_conv_divider: {label: "Divider"}
+                base_uom_conv_multiplier: {label: "Multiplier", displayFormat: "integer"},
+                base_uom_conv_divider: {label: "Divider", displayFormat: "integer"}
             }
         });
 
-        $UOMTable.setData([]);
+        $UOMTable.setData(details);
         $UOMTable.on('openRow', function (e, moduleCode) {
             initializeUOMForm();
             initializeUOMEvents();
@@ -61,8 +61,8 @@
         form_utilities.moduleUrl = baseUrl + "/master-files/items";
         form_utilities.updateObjectId = code;
         form_utilities.validate = true;
-        form_utilities.preProcessData = preProcessData;
-        form_utilities.initializeDefaultProcessing($('.fields-container'));
+        form_utilities.appendDataOnSave = appendDataOnSave;
+        form_utilities.initializeDefaultProcessing($('.fields-container'), $UOMTable);
     }
 
     function initializeUOMForm() {
@@ -107,7 +107,7 @@
         };
     }
 
-    function preProcessData(data) {
+    function appendDataOnSave(data) {
 
         data.images = fileList;
 
@@ -138,18 +138,19 @@
                         for (var i in files) {
 
                             var fileName = files[i].name;
-
-                            if (files[i].name.indexOf("/uploads/") === 0) {
-                                fileName = files[i].name.substring(9);
+                            console.log(files[i]);
+                            if (files[i].image_url.indexOf("uploads/") >= 0) {
+                                fileName = files[i].image_url.substring(9);
+                                console.log(fileName);
                             }
 
                             fileList.push({
                                 server_filename: fileName,
-                                filename: files[i].name
+                                filename: files[i].item_code
                             });
 
                             dropzone.options.addedfile.call(dropzone, files[i]);
-                            dropzone.options.thumbnail.call(dropzone, files[i], files[i].name);
+                            dropzone.options.thumbnail.call(dropzone, files[i], "/" + files[i].image_url);
                         }
 
                     });

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ItemUOM extends Model {
 
     use Searchable;
-    
+
     public $incrementing         = false;
+    public $timestamps           = false;
     protected $table             = "item_uom";
     protected $primaryKey        = ["item_code", "uom_code"];
     protected $searchableColumns = ["item_code", "uom_code"];

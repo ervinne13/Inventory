@@ -8,6 +8,8 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Auth;
+
 /**
  *
  * @author ervinne

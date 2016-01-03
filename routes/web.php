@@ -33,6 +33,7 @@ Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles', 
     Route::resource('locations', 'LocationsController');
 
     Route::get('items/datatable', 'ItemsController@datatable');
+    Route::get('items/{itemCode}/files', 'ItemsController@itemFiles');
     Route::resource('items', 'ItemsController');
 
     Route::get('uom/datatable', 'UOMController@datatable');
