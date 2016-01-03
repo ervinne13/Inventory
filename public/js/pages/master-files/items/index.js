@@ -1,12 +1,12 @@
 
-/* global datatable_utilities, baseUrl, session */
+/* global datatable_utilities, baseUrl, session, moduleCode */
 
 (function () {
 
     "use strict";
 
     $(document).ready(function () {
-        initializeDatatable();        
+        initializeDatatable();
         datatable_utilities.initializeDeleteAction();
     });
 
@@ -34,11 +34,22 @@
                 {orderable: false, targets: [0]},
                 {
                     targets: 0,
-                    render: function (code) {
+                    render: function (code, type, rowData) {
 
-                        var actions = datatable_utilities.getAllDefaultActions(code);
-                        var view = datatable_utilities.getInlineActionsView(actions);
-                        return view;
+                        var access = session.getModuleAccess(moduleCode);
+                        var actions = [];
+
+                        if (access == "MANAGER") {
+                            actions = datatable_utilities.getAllDefaultActions(code);
+                        } else if (access == "AUTHOR" && session.currentUser.username == rowData.created_by) {
+                            actions = datatable_utilities.getAllDefaultActions(code);
+                        } else if (access == "VIEWER") {
+                            actions = [datatable_utilities.getDefaultViewAction(code)];
+                        } else {
+                            actions = [];
+                        }
+
+                        return datatable_utilities.getInlineActionsView(actions);
                     }
                 }
             ]

@@ -4,6 +4,7 @@
 @extends('layouts.skarla')
 
 @section('js')
+@include("module.module-js-info")
 <script src="{{url("js/pages/master-files/items/index.js")}}"></script>
 @endsection
 
