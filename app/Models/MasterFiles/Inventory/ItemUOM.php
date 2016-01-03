@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ItemUOM extends Model {
 
     use Searchable;
-
+    
     public $incrementing         = false;
     protected $table             = "item_uom";
     protected $primaryKey        = ["item_code", "uom_code"];

@@ -33,9 +33,21 @@
                     targets: 0,
                     render: function (code) {
 
-                        var actions = datatable_utilities.getAllDefaultActions(code);
-                        var view = datatable_utilities.getInlineActionsView(actions);
-                        return view;
+                        var access = session.getModuleAccess(moduleCode);
+                        var actions = [];
+
+                        if (access == "MANAGER") {
+                            actions = datatable_utilities.getAllDefaultActions(code);
+                        } else if (access == "AUTHOR" && session.currentUser.username == rowData.created_by) {
+                            actions = datatable_utilities.getAllDefaultActions(code);
+                        } else if (access == "VIEWER") {
+                            actions = [datatable_utilities.getDefaultViewAction(code)];
+                        } else {
+                            actions = [];
+                        }
+
+                        return datatable_utilities.getInlineActionsView(actions);
+
                     }
                 }
             ]

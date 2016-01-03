@@ -11,6 +11,8 @@ class Item extends SGModel {
     use HasAuditLogs;
     use Searchable;
 
+    const MODULE_CODE = "I";
+    
     public $incrementing         = false;
     protected $table             = "item";
     protected $primaryKey        = "code";

@@ -15,7 +15,7 @@ use function view;
 
 class ItemsController extends Controller {
 
-    protected $moduleCode = "I";
+    protected $moduleCode = Item::MODULE_CODE;
 
     /**
      * Display a listing of the resource.

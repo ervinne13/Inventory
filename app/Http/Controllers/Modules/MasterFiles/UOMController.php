@@ -13,6 +13,8 @@ use function view;
 
 class UOMController extends Controller {
 
+    protected $moduleCode = UOM::MODULE_CODE;
+
     /**
      * Display a listing of the resource.
      *
