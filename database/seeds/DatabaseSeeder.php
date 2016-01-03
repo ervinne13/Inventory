@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder {
             $this->call(ItemMovementSourceSeeder::class);
 
             $this->call(ItemSeeder::class);
-            $this->call(InitialInventorySeeder::class);
+//            $this->call(InitialInventorySeeder::class);
             $this->call(SampleBillOfMaterialsSeeder::class);
 
             DB::commit();
