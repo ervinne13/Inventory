@@ -36,6 +36,7 @@ class ProductionOrder extends Model {
             $itemMovement = $detail->createItemMovement($this);
             $itemMovement->save();
             $itemMovement->post();
+            echo "posted";
         }
     }
 
