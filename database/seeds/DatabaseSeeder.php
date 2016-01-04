@@ -42,6 +42,9 @@ class DatabaseSeeder extends Seeder {
             
             DB::table("raw_material")->truncate();
             DB::table("bill_of_materials")->truncate();
+            
+            DB::table("production_order_detail")->truncate();
+            DB::table("production_order")->truncate();
 
             DB::table("item_movement_source")->truncate();
             DB::table("item_movement")->truncate();            
