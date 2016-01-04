@@ -3,6 +3,7 @@
 namespace App\Models\Modules;
 
 use App\Models\BelongsToAnItem;
+use App\Models\HasAuditLogs;
 use App\Models\MasterFiles\Inventory\ItemType;
 use App\Models\MasterFiles\Inventory\UOM;
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +12,7 @@ class BillOfMaterials extends Model {
 
     const MODULE_CODE = "BOM";
 
+    use HasAuditLogs;
     use BelongsToAnItem;
 
     public $incrementing     = false;
@@ -32,8 +34,8 @@ class BillOfMaterials extends Model {
                     return $query->where("inventoriable", true);
                 })->get();
         return $details;
-    }    
-    
+    }
+
     // </editor-fold>
 
     /**     * ****************************************************************** */

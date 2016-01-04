@@ -2,12 +2,13 @@
 
 namespace App\Models\Inventory;
 
-use App\Models\CompositeKeyModel;
+use App\Models\CompositeKeys;
+use App\Models\MasterFiles\Inventory\Item;
 use App\Models\SGModel;
 
 class LocationItemStockSummary extends SGModel {
 
-    use CompositeKeyModel;
+    use CompositeKeys;
 
     public $incrementing  = false;
     public $timestamps    = false;
@@ -27,6 +28,14 @@ class LocationItemStockSummary extends SGModel {
                         ->where("item_code", $keys["item_code"])
                         ->where("item_uom_code", $keys["item_uom_code"])
         ;
+    }
+
+    public function scopeLocation($query, $location) {
+        return $query->where("location_code", $location);
+    }
+
+    public function item() {
+        return $this->belongsTo(Item::class, "item_code");
     }
 
 }

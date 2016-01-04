@@ -32,6 +32,21 @@ class UsersController extends Controller {
         return Datatables::of(User::with('roles')->with('locations'))->make(true);
     }
 
+    public function apiLogin(Request $request) {
+        if (Auth::attempt($request->toArray())) {
+            // Authentication passed...
+            $currentUser = Auth::user();
+            if ($currentUser->location_full_access == 1) {
+                $currentUser->locations = Location::all();
+//                return $currentUser->locations;
+            }
+
+            return $currentUser;
+        } else {
+            return response("Invalid login credentials", 403);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *

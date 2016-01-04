@@ -22,11 +22,15 @@ function ItemSet() {
     this.itemUOMFieldSource = 'item_uom_code';
     this.$itemUOM;
 
+    this.$container;
+
 }
 
 (function (proto) {
 
     proto.loadSetInContainer = function ($container) {
+        this.$container = $container;
+
         for (var key in this.requiredFields) {
             var $field = $($container).find('[data-source=' + key + ']');
             if (!$field) {
@@ -42,7 +46,7 @@ function ItemSet() {
 
         //  special fields
         if ($($container).find('[data-source=' + this.itemUOMFieldSource + ']').length > 0) {
-            this.$itemUOM = this.initializeItemUOMField($('[data-source=' + this.itemUOMFieldSource + ']'));
+            this.$itemUOM = this.initializeItemUOMField($($container).find('[data-source=' + this.itemUOMFieldSource + ']'));
         }
 
     };
@@ -72,7 +76,8 @@ function ItemSet() {
 
             //  process auto update fields
             for (var i in fields) {
-                $('[data-source=' + fields[i].alias + ']').val(selectedItem[fields[i].field]);
+//                $('[data-source=' + fields[i].alias + ']').val(selectedItem[fields[i].field]);
+                _this.$container.find('[data-source=' + fields[i].alias + ']').val(selectedItem[fields[i].field]);
             }
 
             //  process special fields

@@ -13,8 +13,9 @@
 @include('pages.production.production-orders.form.out-of-stock-table-template')
 
 <script type="text/javascript">
-var code = '{{$productionOrder->code}}';
+var docNo = '{{$productionOrder->doc_no}}';
 var mode = '{{$mode}}';
+var status = '{{$productionOrder->status}}';
 var details = JSON.parse('{!! $productionOrder->details !!}');
 </script>
 

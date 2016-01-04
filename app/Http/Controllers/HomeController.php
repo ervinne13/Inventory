@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\MasterFiles\Location;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use function view;
@@ -27,6 +27,13 @@ class HomeController extends Controller {
 
         if (Auth::check()) {
             $viewData = $this->getDefaultViewData();
+
+            if (Auth::user()->hasRole("ADMIN")) {
+                $viewData["locations"] = Location::all();
+            } else {
+                $viewData["locations"] = Auth::user()->locations;
+            }
+
             return view('home', $viewData);
         } else {
             return view("welcome");

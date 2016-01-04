@@ -12,7 +12,7 @@ namespace App\Models;
  *
  * @author ervinne
  */
-trait CompositeKeyModel {
+trait CompositeKeys {
 
     /**
      * Fix for laravel's issue in saving composite keys by tsilenzio:

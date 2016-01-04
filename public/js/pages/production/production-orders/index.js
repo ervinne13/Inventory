@@ -36,13 +36,30 @@
                     targets: 0,
                     render: function (docNo, type, rowData) {
 
-                        var actions = datatable_utilities.getAllDefaultActions(docNo);
-                        var view = datatable_utilities.getInlineActionsView(actions);
-                        return view;
+                        var access = session.getModuleAccess(moduleCode);
+                        var actions = [];
+
+                        if (rowData.status == "Produced") {
+                            actions = [datatable_utilities.getDefaultViewAction(docNo)];
+                        } else if (access == "MANAGER") {
+                            actions = datatable_utilities.getAllDefaultActions(docNo);
+                        } else if (access == "AUTHOR") {
+                            if (session.currentUser.username == rowData.created_by) {
+                                actions = datatable_utilities.getAllDefaultActions(docNo);
+                            } else {
+                                actions = [datatable_utilities.getDefaultViewAction(docNo)];
+                            }
+                        } else if (access == "VIEWER") {
+                            actions = [datatable_utilities.getDefaultViewAction(docNo)];
+                        } else {
+                            actions = [];
+                        }
+
+                        return datatable_utilities.getInlineActionsView(actions);
                     }
                 },
                 {
-                    targets: 1,
+                    targets: 2,
                     render: datatable_utilities.renderDate
                 }
             ]

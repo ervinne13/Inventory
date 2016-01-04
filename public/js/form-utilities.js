@@ -12,6 +12,7 @@ var form_utilities = {
     updateObjectId: 0,
     postValidate: false,
     // behavioral attribues
+    useFullDetailsData: false,
     validate: null,
     useIntegerForBooleanValues: false,
     // overridables
@@ -207,7 +208,9 @@ form_utilities.initializeDefaultProcessing = function ($form, $detailSGTable) {
         if (valid) {
             var data = form_utilities.formToJSON($form);
 
-            if ($detailSGTable) {
+            if ($detailSGTable && form_utilities.useFullDetailsData) {
+                data.details = JSON.stringify($detailSGTable.getFullData());
+            } else if ($detailSGTable) {
                 data.details = JSON.stringify($detailSGTable.getModifiedData());
             }
 
@@ -239,7 +242,7 @@ form_utilities.initializeDefaultProcessing = function ($form, $detailSGTable) {
                             setTimeout(function () {
                                 if (type == "action-create-new") {
                                     window.location.reload();
-                                } else if (type == "action-create-close" || type == "action-update-close") {
+                                } else {
                                     window.location.href = form_utilities.moduleUrl;
                                 }
                             }, 1500);

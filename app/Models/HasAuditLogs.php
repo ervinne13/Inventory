@@ -20,11 +20,15 @@ trait HasAuditLogs {
         parent::boot();
 
         static::updating(function($table) {
-            $table->updated_by = Auth::user()->username;
+            if (Auth::check()) {
+                $table->updated_by = Auth::user()->username;
+            }
         });
 
         static::saving(function($table) {
-            $table->created_by = Auth::user()->username;
+            if (Auth::check()) {
+                $table->created_by = Auth::user()->username;
+            }
         });
     }
 

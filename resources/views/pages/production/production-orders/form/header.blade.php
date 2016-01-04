@@ -7,7 +7,7 @@
 
     <div class="form-group">
         <label class="control-label" for="input-doc-date">Movement Date</label>
-        <input name="doc_date" value="{{$productionOrder->doc_date->format('m/d/Y')}}" id="input-doc-date" readonly type="text" class="form-control">
+        <input name="doc_date" value="{{$productionOrder->doc_date->format('m/d/Y H:i a')}}" id="input-doc-date" readonly type="text" class="form-control">
     </div>
 
     <div class="form-group">

@@ -2,14 +2,19 @@
 
 namespace App\Models\Modules;
 
+use App\Exceptions\OutOfStockException;
+use App\Models\BelongsToAnItem;
+use App\Models\HasAuditLogs;
 use App\Models\Inventory\InventoryStock;
 use App\Models\Inventory\LocationItemStockSummary;
-use App\Models\MasterFiles\Inventory\Item;
-use App\Models\MasterFiles\Inventory\UOM;
+use App\Models\MasterFiles\Accounting\ItemMovementSource;
 use App\Models\SGModel;
 use Carbon\Carbon;
 
 class ItemMovement extends SGModel {
+
+    use HasAuditLogs;
+    use BelongsToAnItem;
 
     protected $table    = "item_movement";
     protected $dates    = ["movement_date"];
@@ -19,7 +24,7 @@ class ItemMovement extends SGModel {
         "movement_date",
         "company_code",
         "location_code",
-        "item_type",
+        "item_type_code",
         "item_code",
         "item_name",
         "item_uom_code",
@@ -29,12 +34,8 @@ class ItemMovement extends SGModel {
         "status",
     ];
 
-    public function item() {
-        return $this->belongsTo(Item::class, "item_code");
-    }
-
-    public function itemUOM() {
-        return $this->belongsTo(UOM::class, "item_uom_code");
+    public function itemMovementSource() {
+        return $this->belongsTo(ItemMovementSource::class, "ref_doc_type");
     }
 
     //
@@ -45,8 +46,19 @@ class ItemMovement extends SGModel {
      * WARNING! make sure to use an external transaction before posting
      */
     public function post() {
-        $this->pushToInventoryStoreStack();
+
+        if ($this->itemMovementSource->nature == "Gain") {
+            $this->pushToInventoryStoreStack();
+        } else if ($this->itemMovementSource->nature == "Loss") {
+            InventoryStock::commitStocks(
+                    $this->company_code, $this->location_code, $this->item_code, $this->item_uom_code, $this->qty
+            );
+        } else {
+            throw new Exception("Unhandled item movement nature {$this->itemMovementSource->nature}");
+        }
+
         $this->updateLocationItemStockSummary();
+
         $this->status = "Posted";
         $this->save();
     }
@@ -54,7 +66,7 @@ class ItemMovement extends SGModel {
     private function pushToInventoryStoreStack() {
         $stock                  = new InventoryStock();
         $stock->entry_date_time = Carbon::now();
-        $stock->item_type_code  = $this->item_type;
+        $stock->item_type_code  = $this->item_type_code;
         $stock->item_code       = $this->item_code;
         $stock->item_uom_code   = $this->item_uom_code;
         $stock->company_code    = $this->company_code;
@@ -73,7 +85,15 @@ class ItemMovement extends SGModel {
                     "item_uom_code" => $this->item_uom_code,
         ]);
 
-        $summary->stock = $summary->stock ? $summary->stock + $this->qty : $this->qty;
+        if ($this->itemMovementSource->nature == "Gain") {
+            $summary->stock = $summary->stock ? $summary->stock + $this->qty : $this->qty;
+        } else if ($this->itemMovementSource->nature == "Loss" && $summary && $summary->stock && $summary->stock >= $this->qty) {
+            $summary->stock -= $this->qty;
+        } else if ($this->itemMovementSource->nature == "Loss") {
+            //  params: item code, remaining stocks, stocks needed
+            throw new OutOfStockException($this->item_code, $summary && $summary->stock ? $summary->stock : 0, $this->qty);
+        }
+
         $summary->save();
     }
 

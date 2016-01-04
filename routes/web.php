@@ -33,6 +33,7 @@ Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles', 
     Route::resource('locations', 'LocationsController');
 
     Route::get('items/datatable', 'ItemsController@datatable');
+    Route::get('items/location/{locationCode}', 'ItemsController@stocksByLocation');
     Route::get('items/{itemCode}/files', 'ItemsController@itemFiles');
     Route::resource('items', 'ItemsController');
 
@@ -52,14 +53,17 @@ Route::group(['prefix' => 'inventory', 'namespace' => 'Modules\Inventory', 'midd
     Route::get('item-movements/datatable', 'ItemMovementController@datatable');
     Route::post('item-movements/post/{docNo}', 'ItemMovementController@postDocument');
     Route::resource('item-movements', 'ItemMovementController');
+
+    Route::get('transfer-orders/datatable', 'TransferOrdersController@datatable');
+    Route::post('transfer-orders/post/{docNo}', 'TransferOrdersController@postDocument');
+    Route::resource('transfer-orders', 'TransferOrdersController');
 });
 
 Route::group(['prefix' => 'production', 'namespace' => 'Modules\Production', 'middleware' => ['auth']], function () {
     Route::get('bom/datatable', 'BillOfMaterialsController@datatable');
     Route::resource('bom', 'BillOfMaterialsController');
 
-    ///{BOMCode}/qty/{qty}    
     Route::get('production-orders/production-details', 'ProductionOrdersController@productionCostDetails');
     Route::get('production-orders/datatable', 'ProductionOrdersController@datatable');
-    Route::resource('production-orders', 'ProductionOrdersController');    
+    Route::resource('production-orders', 'ProductionOrdersController');
 });

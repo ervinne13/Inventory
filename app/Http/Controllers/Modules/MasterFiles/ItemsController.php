@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Modules\MasterFiles;
 
 use App\Http\Controllers\Controller;
+use App\Models\Inventory\LocationItemStockSummary;
 use App\Models\MasterFiles\Accounting\Currency;
 use App\Models\MasterFiles\Inventory\Item;
 use App\Models\MasterFiles\Inventory\ItemImage;
@@ -37,6 +38,10 @@ class ItemsController extends Controller {
 
     public function itemFiles($itemCode) {
         return ItemImage::where("item_code", $itemCode)->get();
+    }
+
+    public function stocksByLocation($locationCode) {
+        return LocationItemStockSummary::Location($locationCode)->with('item')->get();
     }
 
     //

@@ -30,4 +30,28 @@ class ProductionOrderDetail extends Model {
         return $detail;
     }
 
+    /**
+     * @return ItemMovement The generated item movement
+     */
+    public function createItemMovement(ProductionOrder $header) {
+
+        $im = new ItemMovement();
+
+        $im->ref_doc_type   = "PROU"; //  Production Usage
+        $im->ref_doc_no     = $this->doc_no;
+        $im->movement_date  = date("m/d/y H:i a");
+        $im->company_code   = $header->company_code;
+        $im->location_code  = $header->location_code;
+        $im->item_type_code = $this->item_type_code;
+        $im->item_code      = $this->item_code;
+        $im->item_name      = $this->item_name;
+        $im->item_uom_code  = $this->item_uom_code;
+        $im->qty            = $this->qty_consumed;
+        $im->unit_cost      = $this->item_unit_cost;
+        $im->remarks        = $header->remarks;
+        $im->status         = "Open";
+
+        return $im;
+    }
+
 }

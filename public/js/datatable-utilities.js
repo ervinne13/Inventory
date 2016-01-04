@@ -19,7 +19,7 @@ datatable_utilities.renderDate = function (date, type) {
 
 };
 
-datatable_utilities.renderTime = function (time, type) {    
+datatable_utilities.renderTime = function (time, type) {
 
     // if display or filter data is requested, format the time
     if (type === 'display' || type === 'filter') {
@@ -33,7 +33,7 @@ datatable_utilities.renderTime = function (time, type) {
 
 };
 
-datatable_utilities.renderTimeFromDateTime = function (time, type) {    
+datatable_utilities.renderTimeFromDateTime = function (time, type) {
 
     // if display or filter data is requested, format the time
     if (type === 'display' || type === 'filter') {
@@ -105,6 +105,27 @@ datatable_utilities.getDefaultDeleteAction = function (id) {
         displayName: "Delete",
         icon: "fa-times"
     };
+};
+
+datatable_utilities.getAccessBasedActions = function (id, rowData, moduleCode) {
+    var access = session.getModuleAccess(moduleCode);
+    var actions = [];
+
+    if (access == "MANAGER") {
+        actions = datatable_utilities.getAllDefaultActions(id);
+    } else if (access == "AUTHOR") {
+        if (session.currentUser.username == rowData.created_by) {
+            actions = datatable_utilities.getAllDefaultActions(id);
+        } else {
+            actions = [datatable_utilities.getDefaultViewAction(id)];
+        }
+    } else if (access == "VIEWER") {
+        actions = [datatable_utilities.getDefaultViewAction(id)];
+    } else {
+        actions = [];
+    }
+
+    return actions;
 };
 
 //<editor-fold defaultstate="collapsed" desc="Actions">

@@ -1,18 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Modules\MasterFiles;
+namespace App\Http\Controllers\Modules\Inventory;
 
 use App\Http\Controllers\Controller;
 use App\Models\MasterFiles\Company;
+use App\Models\MasterFiles\Inventory\ItemType;
 use App\Models\MasterFiles\Location;
+use App\Models\MasterFiles\NumberSeries;
+use App\Models\Modules\TransferOrder;
+use App\Models\Modules\TransferOrderDetail;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use function response;
 use function view;
 
-class LocationsController extends Controller {
+class TransferOrdersController extends Controller {
+
+    protected $moduleCode = TransferOrder::MODULE_CODE;
 
     /**
      * Display a listing of the resource.
@@ -21,11 +30,11 @@ class LocationsController extends Controller {
      */
     public function index() {
         $viewData = $this->getDefaultViewData();
-        return view("pages.master-files.locations.index", $viewData);
+        return view("pages.inventory.transfer-orders.index", $viewData);
     }
 
     public function datatable() {
-        return Datatables::of(Location::with('company')->select('location.*'))->make(true);
+        return Datatables::of(TransferOrder::query())->make(true);
     }
 
     /**
@@ -36,10 +45,16 @@ class LocationsController extends Controller {
     public function create() {
         $viewData = $this->getDefaultFormViewData();
 
-        $viewData["location"] = new Location();
-        $viewData["mode"]     = "create";
+        $viewData["transferOrder"] = new TransferOrder();
+        $viewData["mode"]          = "create";
 
-        return view("pages.master-files.locations.form", $viewData);
+        $viewData["transferOrder"]->doc_no   = NumberSeries::getNextNumber($this->moduleCode);
+        $viewData["transferOrder"]->doc_date = Carbon::now();
+        $viewData["transferOrder"]->status   = "Open";
+
+        $viewData["documentStatus"] = "Open";
+
+        return view("pages.inventory.transfer-orders.form", $viewData);
     }
 
     /**
@@ -51,9 +66,20 @@ class LocationsController extends Controller {
     public function store(Request $request) {
 
         try {
-            $location = new Location($request->toArray());
-            $location->save();
+            DB::beginTransaction();
+
+            $transferOrder = new TransferOrder($request->toArray());
+            $transferOrder->save();
+
+            $details = json_decode($request->details, true);
+            foreach($details AS $key => $value) {
+                unset($details[$key]);
+            }
+            TransferOrderDetail::insert($details);
+
+            DB::commit();
         } catch (Exception $e) {
+            DB::rollBack();
             return response($e->getMessage(), 500);
         }
     }
@@ -65,12 +91,7 @@ class LocationsController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $viewData = $this->getDefaultFormViewData();
-
-        $viewData["location"] = Location::find($id);
-        $viewData["mode"]     = "view";
-
-        return view("pages.master-files.locations.form", $viewData);
+        //
     }
 
     /**
@@ -80,12 +101,7 @@ class LocationsController extends Controller {
      * @return Response
      */
     public function edit($id) {
-        $viewData = $this->getDefaultFormViewData();
-
-        $viewData["location"] = Location::find($id);
-        $viewData["mode"]     = "edit";
-
-        return view("pages.master-files.locations.form", $viewData);
+        //
     }
 
     /**
@@ -96,13 +112,7 @@ class LocationsController extends Controller {
      * @return Response
      */
     public function update(Request $request, $id) {
-        try {
-            $location = Location::find($id);
-            $location->fill($request->toArray());
-            $location->save();
-        } catch (Exception $e) {
-            return response($e->getMessage(), 500);
-        }
+        //
     }
 
     /**
@@ -112,20 +122,20 @@ class LocationsController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        try {
-            $location = Location::where("company_code", "HYTORC")->where("code", $id);
-            $location->delete();
-
-            return $location;
-        } catch (Exception $e) {
-            return response("Unable to delete location, it is currently in use by other data!", 500);
-        }
+        //
     }
 
     protected function getDefaultFormViewData() {
         $viewData = $this->getDefaultViewData();
 
+        $viewData["itemTypes"] = ItemType::all();
         $viewData["companies"] = Company::all();
+
+        if (Auth::user()->hasRole("ADMIN")) {
+            $viewData["locations"] = Location::all();
+        } else {
+            $viewData["locations"] = Auth::user()->locations;
+        }
 
         return $viewData;
     }

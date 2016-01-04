@@ -8,13 +8,15 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+
 /**
  *
  * @author ervinne
  */
 trait HasDocDate {
 
-    public function setMovementDateAttribute($value) {
+    public function setDocDateAttribute($value) {
         $this->attributes['doc_date'] = Carbon::createFromFormat('m/d/Y H:i a', $value);
     }
 

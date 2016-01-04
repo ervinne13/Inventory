@@ -86,7 +86,7 @@ var mode = '{{$mode}}';
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label class="control-label" for="input-item-type">Item Type</label>                        
-                        <select name="item_type" id="input-item-type"  data-source="item_type_code" class="form-control select2-input" required>
+                        <select name="item_type_code" id="input-item-type"  data-source="item_type_code" class="form-control select2-input" required>
                             @foreach($itemTypes AS $itemType)
                             <?php $selected = $itemMovement->item_type_code == $itemType->code ? "selected" : "" ?>
                             <option {{$selected}} value="{{$itemType->code}}">{{$itemType->name}}</option>

@@ -3,13 +3,13 @@
 namespace App\Models\Modules;
 
 use App\Models\BelongsToAnItem;
-use App\Models\CompositeKeyModel;
+use App\Models\CompositeKeys;
 use Illuminate\Database\Eloquent\Model;
 
 class RawMaterial extends Model {
 
     use BelongsToAnItem;
-    use CompositeKeyModel;
+    use CompositeKeys;
 
     public $incrementing  = false;
     protected $table      = "raw_material";

@@ -34,6 +34,11 @@
             </div>
 
             <div class="form-group">
+                <label class="control-label" for="input-item-unit-cost">Unit Cost</label>                        
+                <input name="item_unit_cost" readonly id="input-item-unit-cost" type="text" class="form-control">
+            </div>
+
+            <div class="form-group">
                 <label class="control-label" for="input-computed-incurred-cost">Computed Cost</label>                        
                 <input name="computed_incurred_cost" readonly id="input-computed-incurred-cost" type="text" class="form-control">
             </div>

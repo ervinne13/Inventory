@@ -21,3 +21,7 @@ Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles'],
     Route::get('items', 'ItemsController@searchableItemsByNameJsonAPI');
     Route::get('itemUOMList', 'ItemsController@searchableUOMByItemCodeJSONAPI');
 });
+
+
+Route::post('login', 'Modules\MasterFiles\UsersController@apiLogin');
+Route::get('inventory/{locationCode}', 'Modules\MasterFiles\ItemsController@stocksByLocation');

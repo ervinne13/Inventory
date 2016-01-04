@@ -29,8 +29,8 @@ class ModuleACLService {
             "name"    => "Inventory",
             "modules" => [
                 ["code" => "IM", "name" => "Item Movement", "icon" => "fa-send", "url" => "inventory/item-movements"],
-                ["code" => "IR", "name" => "Item Reclass", "icon" => "fa-dropbox", "url" => "inventory/item-reclass"],
-                ["code" => "TO", "name" => "Transfer Order", "icon" => "fa-plane", "url" => "inventory/transfer-orders"]
+//                ["code" => "IR", "name" => "Item Reclass", "icon" => "fa-dropbox", "url" => "inventory/item-reclass"],
+//                ["code" => "TO", "name" => "Transfer Order", "icon" => "fa-plane", "url" => "inventory/transfer-orders"]
             ]
         ],
         [
