@@ -129,7 +129,10 @@ class ProductionOrdersController extends Controller {
                 $productionOrder->postUsage();
             } else if ($productionOrder->status == "Produced") {
                 //  requery production order so details will apply
-                $productionOrder = ProductionOrder::find($productionOrder->doc_no);
+                $productionOrder = ProductionOrder::
+                        where("doc_no", $productionOrder->doc_no)
+                        ->with('details')
+                        ->first();
                 $productionOrder->postUsage();
                 $productionOrder->postOutput();
             }
