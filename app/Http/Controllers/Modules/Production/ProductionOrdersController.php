@@ -128,6 +128,8 @@ class ProductionOrdersController extends Controller {
             if ($productionOrder->status == "Ongoing Production") {
                 $productionOrder->postUsage();
             } else if ($productionOrder->status == "Produced") {
+                //  requery production order so details will apply
+                $productionOrder = ProductionOrder::find($id);
                 $productionOrder->postUsage();
                 $productionOrder->postOutput();
             }
