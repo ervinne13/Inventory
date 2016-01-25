@@ -17,11 +17,11 @@ return [
     'organization_name' => 'Hydraulic, Pneumatic & Electric Industrial Bolting Systems HYTORC of Philippines',
     'organization_short_name' => 'HYTORC',
     
-//    'author_link' => 'http://ervinne13.github.io',
-//    'author' => 'Ervinnne Sodusta',
+    'author_link' => 'http://ervinne13.github.io',
+    'author' => 'Ervinnne Sodusta',
     
-    'author_link' => 'https://www.facebook.com/kristanpangga',
-    'author' => 'Kristan Pangga',
+//    'author_link' => 'https://www.facebook.com/kristanpangga',
+//    'author' => 'Kristan Pangga',
     
     /*
     |--------------------------------------------------------------------------

@@ -9,6 +9,8 @@
 
 @section('js')
 
+@include("pages.inventory.item-movements.partials.item-source-field-templates")
+
 <script type="text/javascript">
 var id = '{{$itemMovement->id}}';
 var mode = '{{$mode}}';
@@ -45,7 +47,22 @@ var mode = '{{$mode}}';
                             <option {{$selected}} value="{{$itemMovementSource->code}}">{{$itemMovementSource->name}}</option>
                             @endforeach
                         </select>
-                    </div>                
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" for="input-item-source-type">Item Source Type</label>
+                        <select name="item_source_type" id="input-item-source-type" required class="form-control select2-input">
+                            @foreach($itemSourceTypes AS $itemSourceType)
+                            <?php $selected = $itemMovement->ref_doc_type == $itemSourceType ? "selected" : "" ?>
+                            <option {{$selected}} value="{{$itemSourceType}}">{{$itemSourceType}}</option>
+                            @endforeach
+                        </select>
+                    </div>                                       
+
+                    <div class="form-group">
+                        <label class="control-label" for="input-item-source">Item Source / Supplier</label>
+                        
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label" for="input-ref-doc-no">Reference/Source Document Number</label>

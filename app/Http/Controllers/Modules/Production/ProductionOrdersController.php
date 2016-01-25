@@ -133,7 +133,7 @@ class ProductionOrdersController extends Controller {
                         where("doc_no", $productionOrder->doc_no)
                         ->with('details')
                         ->first();
-                                
+
                 $productionOrder->postUsage();
                 $productionOrder->postOutput();
             }
