@@ -39,6 +39,7 @@ class ModuleACLService {
             "modules" => [
                 ["code" => "NS", "name" => "Number Series", "icon" => "fa-file-o", "url" => "master-files/number-series"],
                 ["code" => "I", "name" => "Item", "icon" => "fa-file-o", "url" => "master-files/items"],
+                ["code" => "S", "name" => "Supplier", "icon" => "fa-users", "url" => "master-files/suppliers"],
                 ["code" => "UOM", "name" => "Unit Of Measurement", "icon" => "fa-file-o", "url" => "master-files/uom"],
                 ["code" => "COM", "name" => "Company", "icon" => "fa-home", "url" => "master-files/companies"],
                 ["code" => "LOC", "name" => "Location", "icon" => "fa-map-marker", "url" => "master-files/locations"],

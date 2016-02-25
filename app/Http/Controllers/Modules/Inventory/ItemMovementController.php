@@ -7,6 +7,7 @@ use App\Models\MasterFiles\Accounting\ItemMovementSource;
 use App\Models\MasterFiles\Company;
 use App\Models\MasterFiles\Inventory\ItemType;
 use App\Models\MasterFiles\Location;
+use App\Models\MasterFiles\Supplier;
 use App\Models\Modules\ItemMovement;
 use Exception;
 use Illuminate\Http\Request;
@@ -162,6 +163,7 @@ class ItemMovementController extends Controller {
         $viewData = $this->getDefaultViewData();
 
         $viewData["itemSourceTypes"] = ["Other/Ext. Document", "Supplier"];
+        $viewData["suppliers"]       = Supplier::all();
 
         $viewData["itemMovementSources"] = ItemMovementSource::all();
         $viewData["itemTypes"]           = ItemType::all();

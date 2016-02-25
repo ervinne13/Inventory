@@ -22,8 +22,10 @@ class CreateSupplierItemPriceTable extends Migration {
 
         Schema::create(self::TABLE_NAME, function(Blueprint $table) {
             $table->string('supplier_number', 30);
+            $table->string('item_type_code', 30);
             $table->string('item_code', 30);
-            $table->decimal('unit_cost', 7, 2);
+            $table->string('item_name', 100);
+            $table->decimal('item_unit_cost', 7, 2);
             $table->timestamps();
 
             $table->primary(['supplier_number', 'item_code']);

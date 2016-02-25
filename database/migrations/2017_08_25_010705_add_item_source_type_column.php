@@ -17,7 +17,7 @@ class AddItemSourceTypeColumn extends Migration {
 
             Schema::table('item_movement', function ($table) {
 
-                if (!Schema::hasColumn('item_movement', 'item_source')) {
+                if (!Schema::hasColumn('item_movement', 'item_source_type')) {
                     $table->string('item_source_type', 32)
                             ->nullable()
                             ->comment("Others / Supplier");
@@ -42,7 +42,7 @@ class AddItemSourceTypeColumn extends Migration {
 
             Schema::table('item_movement', function ($table) {
 
-                if (Schema::hasColumn('item_movement', 'item_source')) {
+                if (Schema::hasColumn('item_movement', 'item_source_type')) {
                     $table->dropColumn('item_source_type');
                 }
             });

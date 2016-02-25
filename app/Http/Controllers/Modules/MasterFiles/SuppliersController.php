@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Modules\MasterFiles;
 
 use App\Http\Controllers\Controller;
+use App\Models\MasterFiles\Inventory\ItemType;
+use App\Models\MasterFiles\NumberSeries;
 use App\Models\MasterFiles\Purchasing\SupplierItemPrice;
 use App\Models\MasterFiles\Supplier;
 use Exception;
@@ -15,7 +17,7 @@ use function view;
 
 class SuppliersController extends Controller {
 
-    protected $viewPath = "pages.master-files.supplier";
+    protected $viewPath = "pages.master-files.suppliers";
 
     /**
      * Display a listing of the resource.
@@ -31,6 +33,16 @@ class SuppliersController extends Controller {
         return Datatables::of(Supplier::query())->make(true);
     }
 
+    public function itemPrice($supplierNumber, $itemCode) {
+        $itemPrice = SupplierItemPrice::Supplier($supplierNumber)->item($itemCode)->first();
+
+        if ($itemPrice) {
+            return $itemPrice->item_unit_cost;
+        } else {
+            return 0;
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,6 +52,8 @@ class SuppliersController extends Controller {
         $viewData             = $this->getDefaultFormViewData();
         $viewData["mode"]     = "create";
         $viewData["supplier"] = new Supplier();
+
+        $viewData["supplier"]->supplier_number = NumberSeries::getNextNumber(Supplier::MODULE_CODE);
 
         return view("{$this->viewPath}.form", $viewData);
     }
@@ -52,8 +66,9 @@ class SuppliersController extends Controller {
      */
     public function store(Request $request) {
         try {
-            $supplier = new Supplier();
-            return $this->saveSupplier($supplier, $request);
+            $supplier = $this->saveSupplier(new Supplier(), $request);
+            NumberSeries::claimNextNumber(Supplier::MODULE_CODE);
+            return $supplier;
         } catch (Exception $e) {
 //            throw $e;
             return response($e->getMessage(), 500);
@@ -138,6 +153,16 @@ class SuppliersController extends Controller {
             DB::rollBack();
             throw $e;
         }
+    }
+
+    protected function getDefaultFormViewData() {
+
+        $viewData = $this->getDefaultViewData();
+
+        $viewData["itemTypes"]  = ItemType::all();
+        $viewData["moduleCode"] = Supplier::MODULE_CODE;
+
+        return $viewData;
     }
 
 }
