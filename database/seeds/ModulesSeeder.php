@@ -14,6 +14,7 @@ class ModulesSeeder extends Seeder {
 
         $modules = [
             ["code" => "I", "name" => "Item"],
+            ["code" => "S", "name" => "Supplier"],
             ["code" => "UOM", "name" => "Unit of Measurement"],
             ["code" => "COM", "name" => "Company"],
             ["code" => "LOC", "name" => "Location"],

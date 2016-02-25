@@ -4,5 +4,9 @@
 
 <script id="select-item-source-template" type="text/html">
     <select name="item_source" data-value="<%= value %>" id="input-item-source" required placeholder="Source of the item or supplier if this is a purchase order" class="form-control">
-    </select>    
+        @foreach($suppliers AS $supplier)
+        <% let selected = value == '{{$supplier->supplier_number}}' ? 'selected' : '' %>
+        <option value="{{$supplier->supplier_number}}" <%= selected %>>{{$supplier->display_name}}</option>
+        @endforeach
+    </select>
 </script>

@@ -21,6 +21,7 @@ class ItemMovement extends SGModel {
     protected $fillable = [
         "ref_doc_type",
         "ref_doc_no",
+        "item_source_type",
         "movement_date",
         "company_code",
         "location_code",
