@@ -28,6 +28,7 @@ class ItemMovement extends SGModel {
         "item_code",
         "item_name",
         "item_uom_code",
+        "item_source",
         "unit_cost",
         "qty",
         "remarks",

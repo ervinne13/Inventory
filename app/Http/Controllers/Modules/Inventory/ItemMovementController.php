@@ -161,6 +161,8 @@ class ItemMovementController extends Controller {
     protected function getDefaultFormViewData() {
         $viewData = $this->getDefaultViewData();
 
+        $viewData["itemSourceTypes"] = ["Other/Ext. Document", "Supplier"];
+
         $viewData["itemMovementSources"] = ItemMovementSource::all();
         $viewData["itemTypes"]           = ItemType::all();
 //        $viewData["items"]               = Item::Active()->get();
