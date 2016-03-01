@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterFiles\Inventory\Item;
 use App\Models\MasterFiles\Location;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,7 @@ class HomeController extends Controller {
      */
     public function index() {
 
+
         if (Auth::check()) {
             $viewData = $this->getDefaultViewData();
 
@@ -34,7 +36,9 @@ class HomeController extends Controller {
                 $viewData["locations"] = Auth::user()->locations;
             }
 
-            return view('home', $viewData);
+//            return Item::LowStock("B_HSQC")->get();
+
+            return view('pages.home.index', $viewData);
         } else {
             return view("welcome");
         }

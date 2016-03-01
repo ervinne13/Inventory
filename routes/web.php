@@ -38,6 +38,8 @@ Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles', 
 
     Route::get('items/datatable', 'ItemsController@datatable');
     Route::get('items/location/{locationCode}', 'ItemsController@stocksByLocation');
+    Route::get('items/low-stock/{locationCode}', 'ItemsController@lowStocksByLocation');
+    Route::get('items/over-stock/{locationCode}', 'ItemsController@overStocksByLocation');
     Route::get('items/{itemCode}/files', 'ItemsController@itemFiles');
     Route::resource('items', 'ItemsController');
 
