@@ -44,6 +44,14 @@ class ItemsController extends Controller {
         return LocationItemStockSummary::Location($locationCode)->with('item')->get();
     }
 
+    public function lowStocksByLocation($locationCode) {
+        return Item::LowStock($locationCode)->get();
+    }
+
+    public function overStocksByLocation($locationCode) {
+        return Item::OverStock($locationCode)->get();
+    }
+
     //
     /**     * ****************************************************************** */
     // <editor-fold defaultstate="collapsed" desc="API">
