@@ -130,7 +130,7 @@ class ItemsController extends Controller {
     public function edit($id) {
         $viewData = $this->getDefaultFormViewData();
 
-        $viewData["mode"] = "create";
+        $viewData["mode"] = "edit";
         $viewData["item"] = Item::
                 with('images')
                 ->with("UOMList")
