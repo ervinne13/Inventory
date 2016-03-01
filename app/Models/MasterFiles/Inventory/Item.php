@@ -16,7 +16,7 @@ class Item extends SGModel {
     public $incrementing         = false;
     protected $table             = "item";
     protected $primaryKey        = "code";
-    protected $fillable          = ['item_type_code', "code", "name", "default_currency_code", "default_unit_cost"];
+    protected $fillable          = ['item_type_code', "code", "name", "default_currency_code", "default_unit_cost", "threshold_low", "threshold_high"];
     protected $searchableColumns = ['item_type_code', "code", "name"];
 
     public function scopeItemTypeCode($query, $itemTypeCode) {
