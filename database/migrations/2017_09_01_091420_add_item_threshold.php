@@ -17,8 +17,13 @@ class AddItemThreshold extends Migration {
 
             Schema::table('item', function ($table) {
 
-                if (!Schema::hasColumn('item', 'threshold')) {
-                    $table->integer('threshold')
+                if (!Schema::hasColumn('item', 'threshold_low')) {
+                    $table->integer('threshold_low')
+                            ->default(0);
+                }
+
+                if (!Schema::hasColumn('item', 'threshold_high')) {
+                    $table->integer('threshold_high')
                             ->default(0);
                 }
             });
@@ -43,6 +48,10 @@ class AddItemThreshold extends Migration {
 
                 if (Schema::hasColumn('item', 'threshold')) {
                     $table->dropColumn('threshold');
+                }
+
+                if (Schema::hasColumn('item', 'threshold_high')) {
+                    $table->dropColumn('threshold_high');
                 }
             });
 
