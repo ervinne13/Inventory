@@ -49,6 +49,7 @@ class DatabaseSeeder extends Seeder {
             DB::table("item_movement_source")->truncate();
             DB::table("item_movement")->truncate();            
 
+            DB::table("supplier")->truncate();
             DB::table("item")->truncate();
             DB::table("item_type")->truncate();
             DB::table("item_image")->truncate();
@@ -66,7 +67,7 @@ class DatabaseSeeder extends Seeder {
             $this->call(DefaultCurrenciesSeeder::class);
 
             $this->call(ItemMovementSourceSeeder::class);
-
+            
             $this->call(ItemSeeder::class);
 //            $this->call(InitialInventorySeeder::class);
             $this->call(SampleBillOfMaterialsSeeder::class);
