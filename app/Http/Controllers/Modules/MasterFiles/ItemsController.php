@@ -118,7 +118,16 @@ class ItemsController extends Controller {
      * @return Response
      */
     public function show($id) {
-        //
+        $viewData = $this->getDefaultFormViewData();
+
+        $viewData["mode"] = "view";
+        $viewData["item"] = Item::
+                with('images')
+                ->with("UOMList")
+                ->where("code", $id)
+                ->first();
+
+        return view("pages.master-files.items.form", $viewData);
     }
 
     /**

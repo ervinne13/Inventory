@@ -31,7 +31,7 @@
             dropdownRowCreateActionsTemplate: '#details-form-create-actions-template',
             dropdownRowEditActionsTemplate: '#details-form-edit-actions-template',
             idColumn: 'uom_code',
-            displayInlineActions: true,
+            displayInlineActions: mode !== "view",
             autoFocusField: 'number',
             highlighColor: '#F78B3E',
             closeRowActionIcon: '<i class="fa fa-chevron-up"></i>',
@@ -55,6 +55,13 @@
             initializeUOMForm();
             initializeUOMEvents();
         });
+
+        if (mode === "view") {
+            $('.action-add-entry').remove();
+            $('.table-item-uom-conversion-action-edit-row').remove();
+            $('.table-item-uom-conversion-action-delete-row').remove();
+        }
+
     }
 
     function initializeForm() {
