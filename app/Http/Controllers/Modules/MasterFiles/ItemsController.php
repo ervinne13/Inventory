@@ -112,10 +112,13 @@ class ItemsController extends Controller {
     public function store(Request $request) {
 
         try {
+			$existingItem = Item::find($request->code);
+			if ($existingItem) {
+				throw new Exception("This item code is already taken.");
+			}
             $this->saveItem(new Item(), $request);
-        } catch (Exception $e) {
-            throw $e;
-//            return response($e->getMessage(), 500);
+        } catch (Exception $e) {            
+            return response($e->getMessage(), 500);
         }
     }
 
