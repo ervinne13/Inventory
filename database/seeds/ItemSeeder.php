@@ -20,8 +20,8 @@ class ItemSeeder extends Seeder {
         $this->insertUOM();
         $this->insertItemTypes();
 
-        $this->insertFixedAssets();
-        $this->insertServices();
+//        $this->insertFixedAssets();
+//        $this->insertServices();
         $this->insertRawMaterials();
         $this->insertProducts();
         $this->insertItemUOM();
@@ -47,8 +47,8 @@ class ItemSeeder extends Seeder {
 
     private function insertItemTypes() {
         $itemTypes = [
-            ["code" => "FA", "name" => "Fixed Asset", "inventoriable" => false],
-            ["code" => "SRVC", "name" => "Services", "inventoriable" => false],
+//            ["code" => "FA", "name" => "Fixed Asset", "inventoriable" => false],
+//            ["code" => "SRVC", "name" => "Services", "inventoriable" => false],
             ["code" => "GRM", "name" => "General Raw Materials", "inventoriable" => true],
             ["code" => "BRM", "name" => "Bolts Raw Materials", "inventoriable" => true],
             ["code" => "MRM", "name" => "Metal Raw Materials", "inventoriable" => true],

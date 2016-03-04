@@ -32,7 +32,7 @@ class UsersController extends Controller {
         return Datatables::of(User::with('roles')->with('locations'))->make(true);
     }
 
-    public function apiLogin(Request $request) {
+    public function apiLogin(Request $request) {        
         if (Auth::attempt($request->toArray())) {
             // Authentication passed...
             $currentUser = Auth::user();

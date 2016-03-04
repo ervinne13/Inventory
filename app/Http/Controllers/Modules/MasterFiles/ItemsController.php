@@ -112,12 +112,18 @@ class ItemsController extends Controller {
     public function store(Request $request) {
 
         try {
-			$existingItem = Item::find($request->code);
-			if ($existingItem) {
-				throw new Exception("This item code is already taken.");
-			}
+            $existingItem = Item::find($request->code);
+            if ($existingItem) {
+                throw new Exception("This item code is already taken.");
+            }
+
+            $existingItemName = Item::where("name", $request->name);
+            if ($existingItemName) {
+                throw new Exception("This item name is already taken.");
+            }
+
             $this->saveItem(new Item(), $request);
-        } catch (Exception $e) {            
+        } catch (Exception $e) {
             return response($e->getMessage(), 500);
         }
     }
@@ -169,6 +175,12 @@ class ItemsController extends Controller {
      */
     public function update(Request $request, $id) {
         try {
+
+            $existingItemName = Item::where("name", $request->name);
+            if ($existingItemName && $existingItemName->id != $id) {
+                throw new Exception("This item name is already taken.");
+            }
+
             $this->saveItem(Item::find($id), $request);
         } catch (Exception $e) {
             return response($e->getMessage(), 500);
