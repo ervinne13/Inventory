@@ -177,7 +177,7 @@ class ItemsController extends Controller {
         try {
 
             $existingItemName = Item::where("name", $request->name);
-            if ($existingItemName && $existingItemName->id != $id) {
+            if ($existingItemName && $existingItemName->code != $id) {
                 throw new Exception("This item name is already taken.");
             }
 
