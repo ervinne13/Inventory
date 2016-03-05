@@ -117,7 +117,7 @@ class ItemsController extends Controller {
                 throw new Exception("This item code is already taken.");
             }
 
-            $existingItemName = Item::where("name", $request->name);
+            $existingItemName = Item::where("name", $request->name)->first();
             if ($existingItemName) {
                 throw new Exception("This item name is already taken.");
             }
