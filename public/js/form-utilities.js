@@ -10,6 +10,7 @@ var form_utilities = {
     // variables
     moduleUrl: "/",
     updateObjectId: 0,
+    errorMessageDisplayed: false,
     postValidate: false,
     // behavioral attribues
     useFullDetailsData: false,
@@ -277,7 +278,9 @@ form_utilities.initializeDefaultProcessing = function ($form, $detailSGTable) {
         } else {
             console.error("Validation failed");
 
-            swal("Error", "Some of the fields has errors. Please check.", "error");
+            if (!form_utilities.errorMessageDisplayed) {
+                swal("Error", "Some of the fields has errors. Please check.", "error");
+            }
         }
 
     });

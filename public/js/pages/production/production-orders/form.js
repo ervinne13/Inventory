@@ -47,7 +47,11 @@
         let status = $('#input-status').val();
         if (hasIncompleteStock && status != "Open") {
             swal("Error", "Incomplete stocks", "error");
+            form_utilities.errorMessageDisplayed = true;
+            return false;
         }
+        
+        return true;
     }
 
     function initializeDetailsTable() {
