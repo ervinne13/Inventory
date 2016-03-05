@@ -176,6 +176,11 @@ class ItemsController extends Controller {
     public function update(Request $request, $id) {
         try {
 
+            $existingItem = Item::find($request->code);
+            if ($existingItem && $request->code != $id) {
+                throw new Exception("This item code is already taken.");
+            }
+
             $existingItemName = Item::where("name", $request->name)->first();
             if ($existingItemName && $existingItemName->code != $id) {
                 throw new Exception("This item name is already taken.");
