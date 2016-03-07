@@ -248,10 +248,11 @@ class ItemsController extends Controller {
                     if ($UOMDetail["is_base_uom"]) {
                         $hasBaseUOM = true;
 
-                        $baseUOM              = new ItemUOM();
-                        $baseUOM->item_code   = $item->code;
-                        $baseUOM->uom_code    = $UOMDetail["uom_code"];
-                        $baseUOM->is_base_uom = true;
+                        $baseUOM                = new ItemUOM();
+                        $baseUOM->item_code     = $item->code;
+                        $baseUOM->uom_code      = $UOMDetail["uom_code"];
+						$baseUOM->base_uom_code = $UOMDetail["uom_code"];
+                        $baseUOM->is_base_uom   = true;
                         $baseUOM->save();
                     } else {
 
