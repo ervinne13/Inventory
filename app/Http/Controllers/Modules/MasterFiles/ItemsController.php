@@ -195,14 +195,19 @@ class ItemsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $code
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($code) {
         try {
-            Item::where("code", $id)->delete();
+            DB::beginTransaction();
+            ItemUOM::where("item_code", $code)->delete();
+            ItemImage::where("item_code", $code)->delete();
+            Item::where("code", $code)->delete();
+
+            DB::commit();
         } catch (Exception $e) {
-            throw $e;
+            DB::rollBack();
 //            return response($e->getMessage(), 500);
             return response("Unable to delete item, it's possible that it's already used in another module. To protect data integrity, this item cannot be deleted anymore.", 500);
         }
