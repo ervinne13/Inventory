@@ -199,7 +199,13 @@ class ItemsController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        try {
+            Item::where("code", $id)->delete();
+        } catch (Exception $e) {
+            throw $e;
+//            return response($e->getMessage(), 500);
+            return response("Unable to delete item, it's possible that it's already used in another module. To protect data integrity, this item cannot be deleted anymore.", 500);
+        }
     }
 
     // </editor-fold>
@@ -225,6 +231,8 @@ class ItemsController extends Controller {
             $item->fill($request->toArray());
             $item->save();
 
+            $hasBaseUOM = false;
+
             if ($request->details) {
                 ItemUOM::where("item_code", $item->code)->delete();
 
@@ -233,12 +241,19 @@ class ItemsController extends Controller {
                 foreach ($details AS $UOMDetail) {
 
                     if ($UOMDetail["is_base_uom"]) {
+                        $hasBaseUOM = true;
+
                         $baseUOM              = new ItemUOM();
                         $baseUOM->item_code   = $item->code;
                         $baseUOM->uom_code    = $UOMDetail["uom_code"];
                         $baseUOM->is_base_uom = true;
                         $baseUOM->save();
                     } else {
+
+                        if (!$UOMDetail["base_uom_code"]) {
+                            throw new Exception("The UOM {$UOMDetail["uom_code"]} does not specify a base UOM, please edit this UOM and supply a base UOM.");
+                        }
+
                         array_push($UOMList, [
                             "item_code"                => $item->code,
                             "uom_code"                 => $UOMDetail["uom_code"],
@@ -248,6 +263,10 @@ class ItemsController extends Controller {
                             "base_uom_conv_divider"    => $UOMDetail["base_uom_conv_divider"] ? $UOMDetail["base_uom_conv_divider"] : 1,
                         ]);
                     }
+                }
+
+                if (!$hasBaseUOM) {
+                    throw new Exception("When specifying units of measurement, at least 1 should be marked as base UOM.");
                 }
 
                 ItemUOM::insert($UOMList);

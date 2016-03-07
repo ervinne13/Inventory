@@ -68,6 +68,7 @@
         form_utilities.moduleUrl = baseUrl + "/master-files/items";
         form_utilities.updateObjectId = code;
         form_utilities.validate = true;
+        form_utilities.useFullDetailsData = true;
         form_utilities.appendDataOnSave = appendDataOnSave;
         form_utilities.initializeDefaultProcessing($('.fields-container'), $UOMTable);
     }
