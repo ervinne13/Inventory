@@ -156,7 +156,17 @@ class ItemMovementController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        //
+        try {
+            DB::beginTransaction();
+
+            ItemMovement::where("id", $id)->delete();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+//            return response($e->getMessage(), 500);
+            return response("Unable to delete item movement, it's possible that it's already used in another module. To protect data integrity, this item cannot be deleted anymore.", 500);
+        }
     }
 
     protected function getDefaultFormViewData() {

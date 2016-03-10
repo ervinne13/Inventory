@@ -81,6 +81,11 @@
         let tmpl = sourceType == "Supplier" ? selectItemSourceTmpl : textfieldItemSourceTmpl;
 
         $('#source-field-container').html(tmpl({value: itemMovement.item_source}));
+
+        if (mode === 'view') {
+            $('[name=item_source]').prop('disabled', true);
+        }
+
     }
 
     function loadUnitCost() {

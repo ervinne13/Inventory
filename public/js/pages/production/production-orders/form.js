@@ -3,6 +3,7 @@
 
 (function () {
 
+    var hasIncompleteStock;
     var outOfStockTableTemplate;
     var $detailsTable;
 
@@ -33,12 +34,24 @@
         form_utilities.validate = true;
         form_utilities.useFullDetailsData = true;
         form_utilities.initializeDefaultProcessing($('.fields-container'), $detailsTable);
+        form_utilities.postValidate = validateSave;
     }
 
     function initializeEvents() {
         $('#action-refresh-details').click(function () {
             refreshProductionCostDetails();
         });
+    }
+
+    function validateSave() {
+        let status = $('#input-status').val();
+        if (hasIncompleteStock && status != "Open") {
+            swal("Error", "Incomplete stocks", "error");
+            form_utilities.errorMessageDisplayed = true;
+            return false;
+        }
+        
+        return true;
     }
 
     function initializeDetailsTable() {
@@ -180,7 +193,8 @@
 
     function showOutOfStockTable(productionCostDetails) {
 
-        if (productionCostDetails && productionCostDetails.out_of_stock.length > 0) {
+        hasIncompleteStock = productionCostDetails && productionCostDetails.out_of_stock.length > 0;
+        if (hasIncompleteStock) {
             var html = outOfStockTableTemplate(productionCostDetails);
             $('#out-of-stock-table-container').html(html);
         } else {

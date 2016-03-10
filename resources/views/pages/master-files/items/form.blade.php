@@ -76,18 +76,18 @@ var details = JSON.parse('{!! $item->UOMList !!}');
 
                     <div class="form-group">
                         <label class="control-label" for="input-unit-cost">Default Unit Cost</label>
-                        <input name="default_unit_cost" value="{{$item->default_unit_cost}}" id="input-unit-cost" placeholder="Usually used for services, and other non inventoriables." type="number" class="form-control">
+                        <input name="default_unit_cost" required value="{{$item->default_unit_cost}}" id="input-unit-cost" placeholder="Usually used for services, and other non inventoriables." type="number" class="form-control">
                     </div>
 
 
                     <div class="form-group">
                         <label class="control-label" for="input-threshold-low">Low Threshold (Maintaining Stock)</label>
-                        <input name="threshold_low" value="{{$item->threshold_low}}" id="input-threshold-low" class="form-control">
+                        <input name="threshold_low" required value="{{$item->threshold_low}}" id="input-threshold-low" class="form-control">
                     </div>
 
                     <div class="form-group">
                         <label class="control-label" for="input-threshold-high">High Threshold (Over Stock)</label>
-                        <input name="threshold_high" value="{{$item->threshold_high}}" id="input-threshold-high" class="form-control">
+                        <input name="threshold_high" required value="{{$item->threshold_high}}" id="input-threshold-high" class="form-control">
                     </div>
 
 

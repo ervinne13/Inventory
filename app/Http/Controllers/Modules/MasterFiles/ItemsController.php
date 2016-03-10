@@ -117,7 +117,7 @@ class ItemsController extends Controller {
                 throw new Exception("This item code is already taken.");
             }
 
-            $existingItemName = Item::where("name", $request->name);
+            $existingItemName = Item::where("name", $request->name)->first();
             if ($existingItemName) {
                 throw new Exception("This item name is already taken.");
             }
@@ -176,6 +176,11 @@ class ItemsController extends Controller {
     public function update(Request $request, $id) {
         try {
 
+            $existingItem = Item::find($request->code);
+            if ($existingItem && $request->code != $id) {
+                throw new Exception("This item code is already taken.");
+            }
+
             $existingItemName = Item::where("name", $request->name)->first();
             if ($existingItemName && $existingItemName->code != $id) {
                 throw new Exception("This item name is already taken.");
@@ -190,11 +195,22 @@ class ItemsController extends Controller {
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int  $code
      * @return Response
      */
-    public function destroy($id) {
-        //
+    public function destroy($code) {
+        try {
+            DB::beginTransaction();
+            ItemUOM::where("item_code", $code)->delete();
+            ItemImage::where("item_code", $code)->delete();
+            Item::where("code", $code)->delete();
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+//            return response($e->getMessage(), 500);
+            return response("Unable to delete item, it's possible that it's already used in another module. To protect data integrity, this item cannot be deleted anymore.", 500);
+        }
     }
 
     // </editor-fold>
@@ -220,6 +236,8 @@ class ItemsController extends Controller {
             $item->fill($request->toArray());
             $item->save();
 
+            $hasBaseUOM = false;
+
             if ($request->details) {
                 ItemUOM::where("item_code", $item->code)->delete();
 
@@ -228,12 +246,20 @@ class ItemsController extends Controller {
                 foreach ($details AS $UOMDetail) {
 
                     if ($UOMDetail["is_base_uom"]) {
-                        $baseUOM              = new ItemUOM();
-                        $baseUOM->item_code   = $item->code;
-                        $baseUOM->uom_code    = $UOMDetail["uom_code"];
-                        $baseUOM->is_base_uom = true;
+                        $hasBaseUOM = true;
+
+                        $baseUOM                = new ItemUOM();
+                        $baseUOM->item_code     = $item->code;
+                        $baseUOM->uom_code      = $UOMDetail["uom_code"];
+						$baseUOM->base_uom_code = $UOMDetail["uom_code"];
+                        $baseUOM->is_base_uom   = true;
                         $baseUOM->save();
                     } else {
+
+                        if (!$UOMDetail["base_uom_code"]) {
+                            throw new Exception("The UOM {$UOMDetail["uom_code"]} does not specify a base UOM, please edit this UOM and supply a base UOM.");
+                        }
+
                         array_push($UOMList, [
                             "item_code"                => $item->code,
                             "uom_code"                 => $UOMDetail["uom_code"],
@@ -243,6 +269,10 @@ class ItemsController extends Controller {
                             "base_uom_conv_divider"    => $UOMDetail["base_uom_conv_divider"] ? $UOMDetail["base_uom_conv_divider"] : 1,
                         ]);
                     }
+                }
+
+                if (!$hasBaseUOM) {
+                    throw new Exception("When specifying units of measurement, at least 1 should be marked as base UOM.");
                 }
 
                 ItemUOM::insert($UOMList);
