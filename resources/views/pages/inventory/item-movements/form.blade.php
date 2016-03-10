@@ -14,8 +14,7 @@
 <script type="text/javascript">
 var id = '{{$itemMovement->id}}';
 var itemMovement = {!! $itemMovement !!};
-var mode = '{{$mode}}';
-</script>
+var mode = '{{$mode}}';</script>
 
 <script src="{{url("js/pages/inventory/item-movements/form.js")}}"></script>
 @endsection
@@ -161,7 +160,14 @@ var mode = '{{$mode}}';
                     <hr>
                 </div>
 
-                @include('module.form-actions')
+                @if ($mode != "create")
+<!--                <div class="pull-left">
+                    <button data-toggle="modal" data-target="#module-logs-modal" type="button" class="btn-sm btn btn-dodger-blue">View Logs</button>
+                </div>-->
+                @include('module.module-logs')
+                @endif
+
+                @include('module.form-actions')                
 
                 <div class="clearfix"></div>
 

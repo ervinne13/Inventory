@@ -107,6 +107,7 @@ class ItemMovementController extends Controller {
 
         $viewData["mode"]         = "view";
         $viewData["itemMovement"] = ItemMovement::find($id);
+        $viewData["moduleLogs"]   = $viewData["itemMovement"]->logs;
 
         return view("pages.inventory.item-movements.form", $viewData);
     }
@@ -122,6 +123,7 @@ class ItemMovementController extends Controller {
 
         $viewData["mode"]         = "edit";
         $viewData["itemMovement"] = ItemMovement::find($id);
+        $viewData["moduleLogs"]   = $viewData["itemMovement"]->logs;
 
         $viewData["documentStatus"] = $viewData["itemMovement"]->status;
 

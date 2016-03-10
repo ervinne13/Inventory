@@ -8,8 +8,10 @@ use App\Models\HasAuditLogs;
 use App\Models\Inventory\InventoryStock;
 use App\Models\Inventory\LocationItemStockSummary;
 use App\Models\MasterFiles\Accounting\ItemMovementSource;
+use App\Models\ModuleLog;
 use App\Models\SGModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ItemMovement extends SGModel {
@@ -36,6 +38,42 @@ class ItemMovement extends SGModel {
         "remarks",
         "status",
     ];
+
+    public static function boot() {
+        parent::boot();
+
+        static::created(function($record) {
+            ModuleLog::create([
+                "module_code"        => "IM",
+                "record_identifier"  => $record["id"],
+                "action_date"        => Carbon::now(),
+                "action"             => "Created Document",
+                "action_by_username" => Auth::user()->username
+            ]);
+        });
+
+        static::updating(function($record) {
+            $original     = $record->getOriginal();
+            $exceptFields = ['updated_at', 'created_at', "created_by", "updated_by"];
+
+            foreach ($original as $field => $value) {
+                if (!in_array($field, $exceptFields) && $value != $record[$field]) {
+                    ModuleLog::create([
+                        "module_code"        => "IM",
+                        "record_identifier"  => $record["id"],
+                        "action_date"        => Carbon::now(),
+                        "action"             => "Updated field {$field} from {$value} to {$record[$field]}",
+                        "action_by_username" => Auth::user()->username
+                    ]);
+                }
+            }
+        });
+    }
+
+    public function logs() {
+        return $this->hasMany(ModuleLog::class, "record_identifier", "id")
+                        ->where('module_code', "IM");
+    }
 
     public function itemMovementSource() {
         return $this->belongsTo(ItemMovementSource::class, "ref_doc_type");
@@ -112,6 +150,14 @@ class ItemMovement extends SGModel {
 
         $this->status = "Posted";
         $this->save();
+
+        ModuleLog::create([
+            "module_code"        => "IM",
+            "record_identifier"  => $this->id,
+            "action_date"        => Carbon::now(),
+            "action"             => "Posted",
+            "action_by_username" => Auth::user()->username
+        ]);
     }
 
     private function pushToInventoryStoreStack() {
