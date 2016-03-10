@@ -10,6 +10,7 @@ use App\Models\Inventory\LocationItemStockSummary;
 use App\Models\MasterFiles\Accounting\ItemMovementSource;
 use App\Models\SGModel;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ItemMovement extends SGModel {
 
@@ -38,6 +39,52 @@ class ItemMovement extends SGModel {
 
     public function itemMovementSource() {
         return $this->belongsTo(ItemMovementSource::class, "ref_doc_type");
+    }
+
+    public static function getTotalSales($dateFrom, $dateTo) {
+        $totalSalesRow = ItemMovement::select(DB::raw('sum(qty * unit_cost) AS total_sales'))
+                ->sales()
+                ->dateFrom($dateFrom)
+                ->dateTo($dateTo)
+                ->first();
+
+        if ($totalSalesRow) {
+            return $totalSalesRow->total_sales;
+        } else {
+            return 0;
+        }
+    }
+
+    public static function getSoldItems($dateFrom, $dateTo) {
+
+        $columns = [
+            'item_type.name AS item_type_name',
+            'item_name',
+            'unit_of_measurement.name AS uom_name',
+            DB::raw('sum(qty) AS total_qty'),
+            DB::raw('sum(qty * unit_cost) AS total_sales'),
+        ];
+
+        return ItemMovement::select($columns)
+                        ->sales()
+                        ->dateFrom($dateFrom)
+                        ->dateTo($dateTo)
+                        ->join("item_type", "item_type_code", "=", "item_type.code")
+                        ->join("unit_of_measurement", "item_uom_code", "=", "unit_of_measurement.code")
+                        ->groupBy(["item_code", "item_uom_code", "item_type.name", "item_name", "unit_of_measurement.name"])
+                        ->get();
+    }
+
+    public function scopeSales($query) {
+        return $query->where("ref_doc_type", "SI");
+    }
+
+    public function scopeDateFrom($query, $date) {
+        return $query->where("movement_date", ">=", $date);
+    }
+
+    public function scopeDateTo($query, $date) {
+        return $query->where("movement_date", "<=", $date);
     }
 
     //

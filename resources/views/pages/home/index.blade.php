@@ -1,3 +1,5 @@
+<?php $uses = ["form", "datepicker"] ?>
+
 @extends('layouts.skarla')
 
 @section('js')
@@ -31,14 +33,12 @@
 <div class="row">
 
     <div class="col-md-6 col-sm-6">
-        @include("pages.home.widgets.low-stock-items")
+        @include("pages.home.widgets.report-generator")
     </div>
 
     <div class="col-md-6 col-sm-6">
+        @include("pages.home.widgets.low-stock-items")        
         @include("pages.home.widgets.over-stock-items")
-    </div>
-
-    <div class="col-md-6 col-sm-6">
         @include("pages.home.widgets.inventory-locations")
     </div>
 

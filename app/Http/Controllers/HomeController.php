@@ -28,7 +28,8 @@ class HomeController extends Controller {
 
 
         if (Auth::check()) {
-            $viewData = $this->getDefaultViewData();
+            $viewData            = $this->getDefaultViewData();
+            $viewData["reports"] = $this->getAvailableReports();
 
             if (Auth::user()->hasRole("ADMIN")) {
                 $viewData["locations"] = Location::all();
@@ -36,12 +37,18 @@ class HomeController extends Controller {
                 $viewData["locations"] = Auth::user()->locations;
             }
 
-//            return Item::LowStock("B_HSQC")->get();
-
             return view('pages.home.index', $viewData);
         } else {
             return view("welcome");
         }
+    }
+
+    private function getAvailableReports() {
+
+        return [
+            "sales-report"            => "Sales Report",
+//            "stocks-available-report" => "Stocks Available"
+        ];
     }
 
 }
