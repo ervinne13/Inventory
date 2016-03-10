@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('files/remove', 'FilesController@remove');
 
     Route::get('report/sales', 'ReportsController@salesReport');
-    Route::get('report/available-stocks', 'ReportsController@availableStocks');
+    Route::get('report/stocks-available', 'ReportsController@availableStocks');
 });
 
 Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles', 'middleware' => ['auth']], function () {

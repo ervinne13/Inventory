@@ -47,7 +47,7 @@ class HomeController extends Controller {
 
         return [
             "sales-report"            => "Sales Report",
-//            "stocks-available-report" => "Stocks Available"
+            "stocks-available-report" => "Stocks Available"
         ];
     }
 

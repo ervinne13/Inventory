@@ -3,6 +3,7 @@ Sales Breakdown
 <table class="table">
     <thead>
         <tr>
+            <th>Sold At Location</th>
             <th>Item Type</th>
             <th>Item Name</th>
             <th>Unit</th>
@@ -13,6 +14,7 @@ Sales Breakdown
     <tbody>
         @foreach($soldItems AS $item)
         <tr>
+            <td>{{$item->location_name}}</td>
             <td>{{$item->item_type_name}}</td>
             <td>{{$item->item_name}}</td>
             <td>{{$item->uom_name}}</td>

@@ -5,6 +5,9 @@ namespace App\Models\Inventory;
 use App\Exceptions\OutOfStockException;
 use App\Models\BelongsToAnItem;
 use App\Models\CompositeKeys;
+use App\Models\MasterFiles\Inventory\Item;
+use App\Models\MasterFiles\Inventory\UOM;
+use App\Models\MasterFiles\Location;
 use Illuminate\Database\Eloquent\Model;
 
 class InventoryStock extends Model {
@@ -34,7 +37,7 @@ class InventoryStock extends Model {
                     ->where("item_uom_code", $UOMCode)
                     ->orderBy("entry_date_time")
                     ->first()
-            ;            
+            ;
 
             if ($partialStock) {
 
@@ -132,4 +135,19 @@ class InventoryStock extends Model {
         return $stocks;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="Relationships">
+
+    public function item() {
+        return $this->belongsTo(Item::class, "item_code");
+    }
+
+    public function location() {
+        return $this->belongsTo(Location::class, "location_code");
+    }
+
+    public function uom() {
+        return $this->belongsTo(UOM::class, "item_uom_code");
+    }
+
+    // </editor-fold>
 }

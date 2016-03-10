@@ -58,6 +58,7 @@ class ItemMovement extends SGModel {
     public static function getSoldItems($dateFrom, $dateTo) {
 
         $columns = [
+            'location.name AS location_name',
             'item_type.name AS item_type_name',
             'item_name',
             'unit_of_measurement.name AS uom_name',
@@ -69,9 +70,10 @@ class ItemMovement extends SGModel {
                         ->sales()
                         ->dateFrom($dateFrom)
                         ->dateTo($dateTo)
+                        ->join("location", "location_code", "=", "location.code")
                         ->join("item_type", "item_type_code", "=", "item_type.code")
                         ->join("unit_of_measurement", "item_uom_code", "=", "unit_of_measurement.code")
-                        ->groupBy(["item_code", "item_uom_code", "item_type.name", "item_name", "unit_of_measurement.name"])
+                        ->groupBy(["location.name", "item_code", "item_uom_code", "item_type.name", "item_name", "unit_of_measurement.name"])
                         ->get();
     }
 

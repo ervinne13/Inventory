@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ReportRequest;
+use App\Models\Inventory\InventoryStock;
 use App\Models\Modules\ItemMovement;
 use Carbon\Carbon;
 use function view;
@@ -31,7 +32,20 @@ class ReportsController extends Controller {
     }
 
     public function availableStocks(ReportRequest $request) {
-        
+
+        $dateFrom = Carbon::createFromFormat("m/d/Y", $request->date_from);
+        $dateTo   = Carbon::createFromFormat("m/d/Y", $request->date_to);
+
+        $stocks = InventoryStock::with("item")
+                ->with("location")
+                ->with("uom")
+                ->get();
+
+        return view("pages.reports.available-stocks.form", [
+            "from"   => $dateFrom,
+            "to"     => $dateTo,
+            "stocks" => $stocks,
+        ]);
     }
 
 }
