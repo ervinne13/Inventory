@@ -161,9 +161,9 @@ var mode = '{{$mode}}';</script>
                 </div>
 
                 @if ($mode != "create")
-<!--                <div class="pull-left">
+                <div class="pull-left">
                     <button data-toggle="modal" data-target="#module-logs-modal" type="button" class="btn-sm btn btn-dodger-blue">View Logs</button>
-                </div>-->
+                </div>
                 @include('module.module-logs')
                 @endif
 
