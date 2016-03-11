@@ -34,7 +34,7 @@
                     <tr>
                         <td>{{$stock->location->name}}</td>
                         <td>{{$stock->item->name}}</td>
-                        <td>{{$stock->uom->name}}</td>
+                        <td>{{$stock->uom ? $stock->uom->name : ""}}</td>
                         <td>{{$stock->qty}}</td>                        
                     </tr>
                     @endforeach
