@@ -188,6 +188,7 @@ class ItemsController extends Controller {
 
             $this->saveItem(Item::find($id), $request);
         } catch (Exception $e) {
+			throw $e;
             return response($e->getMessage(), 500);
         }
     }
