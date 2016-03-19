@@ -16,42 +16,49 @@ class ModuleACLService {
      * @var array
      */
     protected $moduleOrder = [
-        [
+            [
             "icon"    => "fa-industry",
             "name"    => "Production",
             "modules" => [
-                ["code" => "BOM", "name" => "Bill of Materials", "icon" => "fa-file-o", "url" => "production/bom"],
-                ["code" => "PRO", "name" => "Production Order", "icon" => "fa-refresh", "url" => "production/production-orders"],
+                    ["code" => "BOM", "name" => "Bill of Materials", "icon" => "fa-file-o", "url" => "production/bom"],
+                    ["code" => "PRO", "name" => "Production Order", "icon" => "fa-refresh", "url" => "production/production-orders"],
             ]
         ],
-        [
+            [
             "icon"    => "fa-file-o",
             "name"    => "Inventory",
             "modules" => [
-                ["code" => "IM", "name" => "Item Movement", "icon" => "fa-send", "url" => "inventory/item-movements"],
+                    ["code" => "IM", "name" => "Item Movement", "icon" => "fa-send", "url" => "inventory/item-movements"],
 //                ["code" => "IR", "name" => "Item Reclass", "icon" => "fa-dropbox", "url" => "inventory/item-reclass"],
 //                ["code" => "TO", "name" => "Transfer Order", "icon" => "fa-plane", "url" => "inventory/transfer-orders"]
             ]
         ],
-        [
+            [
             "icon"    => "fa-file",
             "name"    => "Master Files",
             "modules" => [
-                ["code" => "NS", "name" => "Number Series", "icon" => "fa-file-o", "url" => "master-files/number-series"],
-                ["code" => "I", "name" => "Item", "icon" => "fa-file-o", "url" => "master-files/items"],
-                ["code" => "S", "name" => "Supplier", "icon" => "fa-users", "url" => "master-files/suppliers"],
-                ["code" => "UOM", "name" => "Unit Of Measurement", "icon" => "fa-file-o", "url" => "master-files/uom"],
+                    ["code" => "NS", "name" => "Number Series", "icon" => "fa-file-o", "url" => "master-files/number-series"],
+                    ["code" => "I", "name" => "Item", "icon" => "fa-file-o", "url" => "master-files/items"],
+                    ["code" => "S", "name" => "Supplier", "icon" => "fa-users", "url" => "master-files/suppliers"],
+                    ["code" => "UOM", "name" => "Unit Of Measurement", "icon" => "fa-file-o", "url" => "master-files/uom"],
 //                ["code" => "COM", "name" => "Company", "icon" => "fa-home", "url" => "master-files/companies"],
                 ["code" => "LOC", "name" => "Location", "icon" => "fa-map-marker", "url" => "master-files/locations"],
             ]
         ],
-        [
+            [
             "icon"    => "fa-lock",
             "name"    => "Security",
             "modules" => [
-                ["code" => "U", "name" => "User", "icon" => "fa-user", "url" => "master-files/users"],
-                ["code" => "R", "name" => "Role", "icon" => "fa-lock", "url" => "security/roles"],
-                ["code" => "ACL", "name" => "ACL", "icon" => "fa-users", "url" => "security/acl"]
+                    ["code" => "U", "name" => "User", "icon" => "fa-user", "url" => "master-files/users"],
+                    ["code" => "R", "name" => "Role", "icon" => "fa-lock", "url" => "security/roles"],
+                    ["code" => "ACL", "name" => "ACL", "icon" => "fa-users", "url" => "security/acl"]
+            ]
+        ],
+            [
+            "icon"    => "fa-gears",
+            "name"    => "Maintenance",
+            "modules" => [
+                    ["code" => "BKR", "name" => "Backup & Restoration", "icon" => "fa-hdd-o", "url" => "maintenance/backup-restore"],
             ]
         ],
     ];

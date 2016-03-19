@@ -13,17 +13,18 @@ class ModulesSeeder extends Seeder {
     public function run() {
 
         $modules = [
-            ["code" => "I", "name" => "Item"],
-            ["code" => "S", "name" => "Supplier"],
-            ["code" => "UOM", "name" => "Unit of Measurement"],
-            ["code" => "COM", "name" => "Company"],
-            ["code" => "LOC", "name" => "Location"],
-            ["code" => "IM", "name" => "Item Movement"],
-            ["code" => "IR", "name" => "Item Reclass"],
-            ["code" => "TO", "name" => "Transfer Order"],
-            ["code" => "BOM", "name" => "Bill of Materials"],
-            ["code" => "PRO", "name" => "Production Order"],
-            ["code" => "ER", "name" => "Exchange Rate"],
+                ["code" => "I", "name" => "Item"],
+                ["code" => "S", "name" => "Supplier"],
+                ["code" => "UOM", "name" => "Unit of Measurement"],
+                ["code" => "COM", "name" => "Company"],
+                ["code" => "LOC", "name" => "Location"],
+                ["code" => "IM", "name" => "Item Movement"],
+                ["code" => "IR", "name" => "Item Reclass"],
+                ["code" => "TO", "name" => "Transfer Order"],
+                ["code" => "BOM", "name" => "Bill of Materials"],
+                ["code" => "PRO", "name" => "Production Order"],
+                ["code" => "BKR", "name" => "Backup & Restoration"],
+//            ["code" => "ER", "name" => "Exchange Rate"],
         ];
 
         Module::insert($modules);

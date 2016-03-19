@@ -191,6 +191,7 @@ return [
          */
         Yajra\Datatables\DatatablesServiceProvider::class,
         Clockwork\Support\Laravel\ClockworkServiceProvider::class,
+        Cornford\Backup\Providers\BackupServiceProvider::class,
     ],
 
     /*
@@ -240,7 +241,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         //  Third Party
-        'Datatables'   => Yajra\Datatables\Datatables::class,
+        'Datatables' => Yajra\Datatables\Datatables::class,
+        'Backup' => Cornford\Backup\Facades\Backup::class,
     ],
 
 ];

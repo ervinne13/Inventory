@@ -25,6 +25,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('report/stocks-available', 'ReportsController@availableStocks');
 });
 
+Route::group(['prefix' => 'maintenance', 'namespace' => 'Modules\Maintenance', 'middleware' => ['auth']], function () {
+    Route::get('backup-restore/datatable', 'BackupAndRestoreController@datatable');
+    Route::get('backup-restore', 'BackupAndRestoreController@index');
+    Route::get('backup-restore/backup', 'BackupAndRestoreController@backup');
+    Route::get('backup-restore/{id}/restore', 'BackupAndRestoreController@restore');
+});
+
 Route::group(['prefix' => 'master-files', 'namespace' => 'Modules\MasterFiles', 'middleware' => ['auth']], function () {
     Route::get('users/datatable', 'UsersController@datatable');
     Route::resource('users', 'UsersController');
